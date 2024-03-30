@@ -1,5 +1,6 @@
 package com.example.ics108project;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Event {
@@ -10,6 +11,11 @@ public class Event {
     private String time;
     private String location;
     private int capacity;
+
+    private Ticket[] tickets;
+
+    private static  ArrayList<Event> events = new ArrayList<>();
+
 
     public Event() {
     }
@@ -22,6 +28,25 @@ public class Event {
         this.time = time;
         this.location = location;
         this.capacity = capacity;
+        this.tickets = new Ticket[capacity];
+    }
+    public static void addEvent(String title, String category, String description, Date date, String time, String location, int capacity){
+        events.add(new Event(title,category,description,date,time,location,capacity));
+    }
+    public  static void addEvent(Event event){
+        events.add(new Event(event.title,event.category,event.description,event.date,event.time,event.location,event.capacity));
+    }
+    public static ArrayList<Event> getEvents() {
+        return events;
+    }
+    public static void delEvent(String eventName){
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).title.equals(eventName)){
+                events.remove(i);
+            }
+        }
+
+
     }
 
     public String getTitle() {
