@@ -2,8 +2,8 @@ package com.example.ics108project;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javafx.scene.layout.Pane;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,55 +15,36 @@ public class LoginPage extends Application {
 
     @Override
     public void start(Stage stage){
-        Pane pane = new Pane();
-        Scene scene = new Scene(pane);
-        pane.setPrefSize(700,500);
-        TextField text1 = new TextField();
+        GridPane gridPane = new GridPane();
+        Scene scene = new Scene(gridPane);
         Label headerLabel = new Label("Login Screen");
-        headerLabel.setLayoutX(300);
-        headerLabel.setLayoutY(15);
-        headerLabel.setScaleY(3);
-        headerLabel.setScaleX(3);
-        pane.getChildren().add(headerLabel);
+        headerLabel.setScaleY(1.5);
+        headerLabel.setScaleX(1.5);
         Label loginMassage = new Label();
-        loginMassage.setLayoutX(275);
-        loginMassage.setLayoutY(50);
-        loginMassage.setScaleY(1.5);
-        loginMassage.setScaleX(1.5);
-        pane.getChildren().add(loginMassage);
         Label userFieldLabel = new Label("Username");
-        userFieldLabel.setLayoutX(145);
-        userFieldLabel.setLayoutY(225);
-        userFieldLabel.setScaleY(1.5);
-        userFieldLabel.setScaleX(1.5);
-        pane.getChildren().add(userFieldLabel);
         TextField userField = new TextField();
-        userField.setLayoutX(100);
-        userField.setLayoutY(250);
         Label passFieldLabel = new Label("Password");
-        passFieldLabel.setLayoutX(500);
-        passFieldLabel.setLayoutY(225);
-        passFieldLabel.setScaleY(1.5);
-        passFieldLabel.setScaleX(1.5);
-        pane.getChildren().add(passFieldLabel);
         TextField passField = new TextField();
-        passField.setLayoutX(450);
-        passField.setLayoutY(250);
         Button loginButton = new Button();
-        loginButton.setPrefSize(75,35);
-        loginButton.setLayoutX(300);
-        loginButton.setLayoutY(400);
         loginButton.setText("Login");
-        loginButton.setOnAction(new EventHandler<ActionEvent>() {
+        loginButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                loginMassage.setText("Welcome "+ userField.getText()
+                loginMassage.setText("Welcome " + userField.getText()
                 );
             }
         });
-        pane.getChildren().add(userField);
-        pane.getChildren().add(passField);
-        pane.getChildren().add(loginButton);
+        gridPane.add(headerLabel,3,1);
+        gridPane.add(loginMassage,3,2);
+        gridPane.add(userFieldLabel,2,4);
+        gridPane.add(passFieldLabel,3,4);
+        gridPane.add(userField,2,5);
+        gridPane.add(passField,3,5);
+        gridPane.add(loginButton,5,5);
+        Insets gridPadding = new Insets(10,10,10,10);
+        gridPane.setPadding(gridPadding);
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
         stage.setScene(scene);
         stage.setTitle("Login");
         stage.show();

@@ -8,5 +8,6 @@ public class driver {
         System.out.println(Event.getEvents().get(0).getTitle());
         Event.delEvent("event1");
         System.out.println(Event.getEvents());
+        LoginPage.main(args);
     }
 }
