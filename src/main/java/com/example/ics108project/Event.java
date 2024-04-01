@@ -30,6 +30,7 @@ public class Event {
         this.capacity = capacity;
         this.tickets = new Ticket[capacity];
     }
+    // may we make several methods and each one of them edit specific thing
     public static void addEvent(String title, String category, String description, Date date, String time, String location, int capacity){
         events.add(new Event(title,category,description,date,time,location,capacity));
     }
@@ -48,6 +49,12 @@ public class Event {
 
 
     }
+//    public  boolean isUpcoming(){
+//        if (date.after(new Date())){
+//            return false;
+//        }
+//        else return true;
+//    }
 
     public String getTitle() {
         return title;
