@@ -18,6 +18,13 @@ public class Event {
 
 
     public Event() {
+        this.title = "noTitle";
+        this.category = "noCategory";
+        this.description = "noDescription";
+        this.date = null;
+        this.time = "noTime";
+        this.location =" noLocation";
+        this.capacity = 0;
     }
 
     public Event(String title, String category, String description, Date date, String time, String location, int capacity) {

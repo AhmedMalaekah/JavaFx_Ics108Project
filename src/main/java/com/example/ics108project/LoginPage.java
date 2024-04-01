@@ -1,5 +1,6 @@
 package com.example.ics108project;
 
+import Authentication.User;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -27,11 +28,17 @@ public class LoginPage extends Application {
         TextField passField = new TextField();
         Button loginButton = new Button();
         loginButton.setText("Login");
+        Button registerButton = new Button("Register");
+
+
         loginButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                loginMassage.setText("Welcome " + userField.getText()
-                );
+                int index = User.getUsernames().indexOf(userField.getText());
+                if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin() ){
+                    System.out.println("i am an admin");
+                }
+
             }
         });
         gridPane.add(headerLabel,3,1);
@@ -41,6 +48,7 @@ public class LoginPage extends Application {
         gridPane.add(userField,2,5);
         gridPane.add(passField,3,5);
         gridPane.add(loginButton,5,5);
+        gridPane.add(registerButton,6,5);
         Insets gridPadding = new Insets(10,10,10,10);
         gridPane.setPadding(gridPadding);
         gridPane.setHgap(10);
@@ -48,6 +56,13 @@ public class LoginPage extends Application {
         stage.setScene(scene);
         stage.setTitle("Login");
         stage.show();
+        {
+            int index = User.getUsernames().indexOf(userField.getText());
+            if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin() ){
+                System.out.println("i am an admin");
+            }
+        }
+
 
 
     }
