@@ -11,6 +11,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
+import java.util.ArrayList;
+
 public class LoginPage extends Application {
 
 
@@ -33,10 +36,26 @@ public class LoginPage extends Application {
         loginButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                int index = User.getUsernames().indexOf(userField.getText());
-                if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin()){
-                    System.out.println("i am an admin");
-                    System.out.println("Secsess login");
+                boolean userFound = false;
+                for(int i = 0 ; i< User.getUsers().size(); i++) {
+                    User currentUser = User.getUsers().get(i);
+                    if (currentUser.getUsername().equals(userField.getText())) {
+                        userFound = true;
+                        if (currentUser.getPasswaord().equals(passField.getText())) {
+                            if(currentUser.isAdmin()){
+                                adminPage(currentUser);
+                            }
+                            else{
+                                basicUserPage(currentUser);
+                            }
+                        } else {
+                            System.out.println("Wrong credintials");
+                            break;
+                        }
+                    }
+                }
+                if(!userFound){
+                    System.out.println("Wrong credintials");
                 }
 
             }
