@@ -56,12 +56,12 @@ public class Event {
 
 
     }
-//    public  boolean isUpcoming(){
-//        if (date.after(new Date())){
-//            return false;
-//        }
-//        else return true;
-//    }
+    public  boolean isUpcoming(){
+        if (date.after(new Date())){
+            return true;
+        }
+        else return false;
+    }
 
     public String getTitle() {
         return title;
