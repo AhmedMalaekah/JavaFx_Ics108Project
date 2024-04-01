@@ -8,17 +8,19 @@ public class User {
     private String passwaord;
 
     private boolean admin; //  it could be isadmin instead of admin
-    private static ArrayList<User> users = new ArrayList<>();
+    private static final ArrayList<User> users = new ArrayList<>();
 
-    private static ArrayList<String> usernames = new ArrayList<>();
-    private static ArrayList<String> passwords = new ArrayList<>();
+    private static final ArrayList<String> usernames = new ArrayList<>();
+    private static final ArrayList<String> passwords = new ArrayList<>();
 
     public User(String username, String passwaord, boolean admin) {
         this.username = username;
         this.passwaord = passwaord;
         this.admin = admin;
-        addUser();
-        fillUsers();
+        User.users.add(this);
+        usernames.add(this.getUsername());
+        passwords.add(this.getPasswaord());
+
     }
 
     public User() {
@@ -26,12 +28,7 @@ public class User {
         this.passwaord = "nopass";
     }
 
-    public void addUser(){
-        User.users.add(this);
-    }
-
-
-    public static boolean validUsername(String username) {
+        public static boolean validUsername(String username) {
         if (usernames.contains(username)) {
             return false;
         }
@@ -44,7 +41,6 @@ public class User {
         for (int i = 0; i < users.size(); i++) {
             usernames.add(users.get(i).getUsername());
         }
-
         for (int i = 0; i < users.size(); i++) {
             passwords.add(users.get(i).getPasswaord());
         }
@@ -65,10 +61,10 @@ public class User {
     public static ArrayList<String> getUsernames() {
         return usernames;
     }
-
     public static ArrayList<String> getPasswords() {
         return passwords;
     }
+
 
     public String getUsername() {
         return username;

@@ -26,8 +26,7 @@ public class LoginPage extends Application {
         TextField userField = new TextField();
         Label passFieldLabel = new Label("Password");
         TextField passField = new TextField();
-        Button loginButton = new Button();
-        loginButton.setText("Login");
+        Button loginButton = new Button("Login");
         Button registerButton = new Button("Register");
 
 
@@ -35,8 +34,9 @@ public class LoginPage extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 int index = User.getUsernames().indexOf(userField.getText());
-                if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin() ){
+                if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin()){
                     System.out.println("i am an admin");
+                    System.out.println("Secsess login");
                 }
 
             }
