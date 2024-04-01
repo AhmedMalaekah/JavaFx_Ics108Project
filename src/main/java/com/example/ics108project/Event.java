@@ -10,9 +10,8 @@ public class Event {
     private Date date;
     private String time;
     private String location;
-    private int capacity;
+    private Ticket[] capacity;
 
-    private Ticket[] tickets;
 
     private static  ArrayList<Event> events = new ArrayList<>();
 
@@ -24,10 +23,10 @@ public class Event {
         this.date = null;
         this.time = "noTime";
         this.location =" noLocation";
-        this.capacity = 0;
+        this.capacity = null;
     }
 
-    public Event(String title, String category, String description, Date date, String time, String location, int capacity) {
+    public Event(String title, String category, String description, Date date, String time, String location, Ticket[] capacity) {
         this.title = title;
         this.category = category;
         this.description = description;
@@ -35,10 +34,9 @@ public class Event {
         this.time = time;
         this.location = location;
         this.capacity = capacity;
-        this.tickets = new Ticket[capacity];
     }
     // may we make several methods and each one of them edit specific thing
-    public static void addEvent(String title, String category, String description, Date date, String time, String location, int capacity){
+    public static void addEvent(String title, String category, String description, Date date, String time, String location, Ticket[] capacity){
         events.add(new Event(title,category,description,date,time,location,capacity));
     }
     public  static void addEvent(Event event){
@@ -111,11 +109,11 @@ public class Event {
         this.location = location;
     }
 
-    public int getCapacity() {
+    public Ticket[] getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Ticket[] capacity) {
         this.capacity = capacity;
     }
 }

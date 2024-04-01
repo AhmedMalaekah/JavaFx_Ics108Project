@@ -34,10 +34,40 @@ public class LoginPage extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 int index = User.getUsernames().indexOf(userField.getText());
-                if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin()){
+                User currentUser = User.getUsers().get(index);
+                if (currentUser.getUsername().equals(userField.getText())){
                     System.out.println("i am an admin");
                     System.out.println("Secsess login");
+                    GridPane gridPane1 = new GridPane();
+                    Scene scene = new Scene(gridPane1);
+                    Label headerLabel = new Label("admin Screen");
+                    headerLabel.setScaleY(1.5);
+                    headerLabel.setScaleX(1.5);
+                    Label userFieldLabel = new Label("Username");
+                    TextField userField = new TextField();
+                    Label passFieldLabel = new Label("Password");
+                    TextField passField = new TextField();
+                    Button loginButton = new Button("Login");
+                    gridPane1.add(headerLabel,3,1);
+                    gridPane1.add(userFieldLabel,2,4);
+                    gridPane1.add(passFieldLabel,3,4);
+                    gridPane1.add(userField,2,5);
+                    gridPane1.add(passField,3,5);
+                    gridPane1.add(loginButton,5,5);
+                    Insets gridPadding = new Insets(10,10,10,10);
+                    gridPane1.setPadding(gridPadding);
+                    gridPane1.setHgap(10);
+                    gridPane1.setVgap(10);
+                    stage.setScene(scene);
+                    stage.setTitle("Login");
+                    stage.show();
+
                 }
+                else if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && !User.getUsers().get(index).isAdmin()){
+                    System.out.println("i am not admin");
+                    System.out.println("seccessful login");
+                }
+                else System.out.println("Wrong login information");
 
             }
         });
@@ -56,15 +86,6 @@ public class LoginPage extends Application {
         stage.setScene(scene);
         stage.setTitle("Login");
         stage.show();
-        {
-            int index = User.getUsernames().indexOf(userField.getText());
-            if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin() ){
-                System.out.println("i am an admin");
-            }
-        }
-
-
-
     }
 
     public static void main(String[] args) {

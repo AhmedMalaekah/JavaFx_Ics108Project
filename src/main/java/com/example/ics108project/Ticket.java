@@ -4,6 +4,11 @@ import Authentication.User;
 
 public class Ticket{
     private User user;
-    private Event event;
     private int setNum;
+    Ticket(User user,int setNum){
+        this.user = user;
+        this.setNum = setNum;
+    }
+    Ticket(){}
 }
+
