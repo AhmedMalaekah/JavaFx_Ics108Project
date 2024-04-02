@@ -19,7 +19,12 @@ public class User {
         this.admin = admin;
         User.users.add(this);
         usernames.add(this.getUsername());
-        passwords.add(this.getPasswaord());
+
+    }
+    public boolean checkPassword(String passwaord){
+        if (this.passwaord.equals(passwaord))
+            return true;
+        else return false;
 
     }
 
@@ -41,9 +46,6 @@ public class User {
         for (int i = 0; i < users.size(); i++) {
             usernames.add(users.get(i).getUsername());
         }
-        for (int i = 0; i < users.size(); i++) {
-            passwords.add(users.get(i).getPasswaord());
-        }
     }
     public boolean isAdmin(){
         if (admin){
@@ -61,11 +63,6 @@ public class User {
     public static ArrayList<String> getUsernames() {
         return usernames;
     }
-    public static ArrayList<String> getPasswords() {
-        return passwords;
-    }
-
-
     public String getUsername() {
         return username;
     }
@@ -74,13 +71,6 @@ public class User {
         this.username = username;
     }
 
-    public String getPasswaord() {
-        return passwaord;
-    }
-
-    public void setPasswaord(String passwaord) {
-        this.passwaord = passwaord;
-    }
 
     @Override
     public String toString() {

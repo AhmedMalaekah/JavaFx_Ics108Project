@@ -37,27 +37,27 @@ public class LoginPage extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 boolean userFound = false;
-                for(int i = 0 ; i< User.getUsers().size(); i++) {
-                    User currentUser = User.getUsers().get(i);
-                    if (currentUser.getUsername().equals(userField.getText())) {
-                        userFound = true;
-                        if (currentUser.getPasswaord().equals(passField.getText())) {
-                            if(currentUser.isAdmin()){
-                                adminPage(currentUser);
-                            }
-                            else{
-                                basicUserPage(currentUser);
-                            }
-                        } else {
-                            System.out.println("Wrong credintials");
-                            break;
-                        }
+
+                int index = User.getUsernames().indexOf(userField.getText());
+                if (index != -1){
+                    userFound = true;
+
+                }
+                else index =0;
+                User user = User.getUsers().get(index);
+                {
+                    if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& user.isAdmin()&& userFound){
+                        System.out.println("login done successfully");
+                        System.out.println("I am an admin");
+                    }
+                    else if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& !user.isAdmin()&& userFound){
+                        System.out.println("login done successfully");
+                        System.out.println("I am an basic user");
+                    }
+                    else {
+                        System.out.println("Wrong credintials");
                     }
                 }
-                if(!userFound){
-                    System.out.println("Wrong credintials");
-                }
-
             }
         });
         gridPane.add(headerLabel,3,1);
@@ -75,14 +75,6 @@ public class LoginPage extends Application {
         stage.setScene(scene);
         stage.setTitle("Login");
         stage.show();
-        {
-            int index = User.getUsernames().indexOf(userField.getText());
-            if (User.getUsernames().contains(userField.getText())&& User.getPasswords().get(index).equals(passField.getText()) && User.getUsers().get(index).isAdmin() ){
-                System.out.println("i am an admin");
-            }
-        }
-
-
 
     }
 

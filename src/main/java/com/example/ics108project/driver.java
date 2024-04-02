@@ -14,7 +14,6 @@ public class driver {
         Date date1 = sdf.parse("02/04/2024");
         Date date2 = new Date();
         Event e1 = new Event("event2","workshop","java learning workshop",date1,"11PM","building 22", new Ticket[150]);
-        System.out.println(e1.isUpcoming());
         User ahmed = new User("Ahmed","test",true);
         User yosef = new User("yosef","123",false);
         LoginPage.main(args);
