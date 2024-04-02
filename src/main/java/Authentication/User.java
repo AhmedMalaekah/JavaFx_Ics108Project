@@ -1,18 +1,15 @@
 package Authentication;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class User {
     private String username;
     private String passwaord;
 
-    private boolean admin; //  it could be isadmin instead of admin
+    private boolean admin;
     private static final ArrayList<User> users = new ArrayList<>();
 
     private static final ArrayList<String> usernames = new ArrayList<>();
-    private static final ArrayList<String> passwords = new ArrayList<>();
-
     public User(String username, String passwaord, boolean admin) {
         this.username = username;
         this.passwaord = passwaord;
@@ -21,6 +18,12 @@ public class User {
         usernames.add(this.getUsername());
 
     }
+
+    public User() {
+        this.username = "none";
+        this.passwaord = "nopass";
+    }
+
     public boolean checkPassword(String passwaord){
         if (this.passwaord.equals(passwaord))
             return true;
@@ -28,9 +31,11 @@ public class User {
 
     }
 
-    public User() {
-        this.username = "none";
-        this.passwaord = "nopass";
+    public boolean validUsername(){
+        if (User.usernames.contains(username)){
+            return false;
+        }
+        else return true;
     }
 
         public static boolean validUsername(String username) {

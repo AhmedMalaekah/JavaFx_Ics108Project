@@ -13,10 +13,13 @@ public class driver {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date1 = sdf.parse("02/04/2024");
         Date date2 = new Date();
-        Event e1 = new Event("event2","workshop","java learning workshop",date1,"11PM","building 22", new Ticket[150]);
+        Event e1 = new Event("event1","workshop","java learning workshop","05/04/2024","11PM","building 22", 150);
+        Event e2 = new Event("event2","workshopJavas","java learning workshop","02/04/2024","12PM","building 22", 150);
+
         User ahmed = new User("Ahmed","test",true);
         User yosef = new User("yosef","123",false);
-        LoginPage.main(args);
+//        LoginPage.main(args);
+        AdminEvents.main(args);
 
     }
 }

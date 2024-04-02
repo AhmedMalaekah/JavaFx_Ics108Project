@@ -28,7 +28,7 @@ public class LoginPage extends Application {
         Label userFieldLabel = new Label("Username");
         TextField userField = new TextField();
         Label passFieldLabel = new Label("Password");
-        TextField passField = new TextField();
+        PasswordField passField = new PasswordField();
         Button loginButton = new Button("Login");
         Button registerButton = new Button("Register");
 
