@@ -37,15 +37,15 @@ public class AdminEvents extends Application {
         TableColumn<Event,String> dateColumn = new  TableColumn("date");
         TableColumn<Event,String> timeColumn = new  TableColumn("time");
         TableColumn<Event,String> locationColumn = new  TableColumn("location");
-        TableColumn<Event,String> capacityColumn = new  TableColumn("capacity");
+        TableColumn<Event,Integer> capacityColumn = new  TableColumn("capacity");
 
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title") );
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacityNum"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateString"));
 
 //        titleColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 //        categoryColumn.setCellFactory(TextFieldTableCell.forTableColumn());

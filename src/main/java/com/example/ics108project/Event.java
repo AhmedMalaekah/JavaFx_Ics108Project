@@ -4,13 +4,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Calendar;
+import java.text.*;
 
 public class Event {
     private String title;
     private String category;
     private String description;
     private Date date;
-
     private String dateString;
     private String time;
     private String location;
@@ -31,22 +32,25 @@ public class Event {
         this.capacity = null;
     }
 
-    public Event(String title, String category, String description, String date, String time, String location, int capacity) {
+
+    public Event(String title, String category, String description, Date date, String time, String location, int capacityNum) {
         this.title = title;
         this.category = category;
         this.description = description;
-        this.dateString = date;
+        this.date = date;
         this.time = time;
+        this.dateString = DateFormat.getDateInstance().format(date.getTime());
         this.location = location;
-        this.capacityNum = capacity;
+        this.capacityNum = capacityNum;
+        this.capacity = new Ticket[capacityNum];
         Event.getEvents().add(this);
     }
     // may we make several methods and each one of them edit specific thing
-    public static void addEvent(String title, String category, String description, String date, String time, String location, int capacity){
+    public static void addEvent(String title, String category, String description, Date date, String time, String location, int capacity){
         events.add(new Event(title,category,description,date,time,location,capacity));
     }
     public  static void addEvent(Event event){
-        events.add(new Event(event.title,event.category,event.description,event.dateString,event.time,event.location,event.capacityNum));
+        events.add(new Event(event.title,event.category,event.description,event.date,event.time,event.location,event.capacityNum));
     }
     public static ArrayList<Event> getEvents() {
         return events;
@@ -100,6 +104,18 @@ public class Event {
 
     public Date getDate() {
         return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getCapacityNum() {
+        return capacityNum;
+    }
+
+    public void setCapacityNum(int capacityNum) {
+        this.capacityNum = capacityNum;
     }
 
     public void setDate(String date)  {
