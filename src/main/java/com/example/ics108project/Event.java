@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
 import java.text.*;
+import javafx.scene.control.Button;
 
 public class Event {
     private String title;
@@ -17,6 +18,8 @@ public class Event {
     private String location;
     private Ticket[] capacity;
     private int capacityNum;
+    private Button button;
+
 
 
     private static  ArrayList<Event> events = new ArrayList<>();
@@ -30,6 +33,7 @@ public class Event {
         this.time = "noTime";
         this.location =" noLocation";
         this.capacity = null;
+        this.button = new Button("book");
     }
 
 
@@ -43,6 +47,7 @@ public class Event {
         this.location = location;
         this.capacityNum = capacityNum;
         this.capacity = new Ticket[capacityNum];
+        this.button = new Button("book");
         Event.getEvents().add(this);
     }
     // may we make several methods and each one of them edit specific thing
@@ -50,7 +55,7 @@ public class Event {
         events.add(new Event(title,category,description,date,time,location,capacity));
     }
     public  static void addEvent(Event event){
-        events.add(new Event(event.title,event.category,event.description,event.date,event.time,event.location,event.capacityNum));
+        events.add(event);
     }
     public static ArrayList<Event> getEvents() {
         return events;
@@ -78,6 +83,15 @@ public class Event {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public Button getButton() {
+        return button;
+    }
+
+    public void setButton(Button button) {
+        this.button = button;
+    }
+
     public String getDateString() {
         return dateString;
     }
