@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Calendar;
 import java.text.*;
 import javafx.scene.control.Button;
-
 public class Event {
     private String title;
     private String category;
@@ -19,6 +18,7 @@ public class Event {
     private Ticket[] capacity;
     private int capacityNum;
     private Button button;
+
 
 
 
