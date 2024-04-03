@@ -19,9 +19,6 @@ public class Event {
     private int capacityNum;
     private Button button;
 
-
-
-
     private static  ArrayList<Event> events = new ArrayList<>();
 
 
