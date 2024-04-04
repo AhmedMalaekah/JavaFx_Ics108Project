@@ -14,8 +14,14 @@ public class User {
         this.username = username;
         this.passwaord = passwaord;
         this.admin = admin;
-        User.users.add(this);
-        usernames.add(this.getUsername());
+//        User.users.add(this);
+//        usernames.add(this.getUsername());
+
+    }
+    public static void createUser(String username, String passwaord, boolean admin) {
+        User newUser = new User(username,passwaord,admin);
+        User.users.add(newUser);
+        usernames.add(newUser.getUsername());
 
     }
 
@@ -81,4 +87,9 @@ public class User {
     public String toString() {
         return username;
 }
+
+    public static void loadUsers(){
+        createUser("Yousef", "123", false);
+        createUser("Khalid", "123", true);
+    }
 }

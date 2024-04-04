@@ -14,76 +14,37 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import Authentication.User;
 
+import java.util.Objects;
+
 public class Main extends Application {
 
-    public static final double winWidth = 800;
-    public static final double winHeight = 600;
+    public static final double WIN_WIDTH = 800;
+    public static final double WIN_HEIGHT = 700;
+    public static final double HEADING_SIZE = 0.05 * WIN_WIDTH;
+    public static final Font HEADING_FONT = Font.font("Comic Sans MS", HEADING_SIZE);
+    public static final Insets PADDING  = new Insets(10, 8, 10, 8);
     public static User currentUser;
     @Override
     public void start(Stage applicationStage) {
-
-        Scene currentScene;
-        currentUser = loginPage(applicationStage);
-
-        currentScene = homePage();
-
-        applicationStage.setScene(currentScene);
-        applicationStage.show();
+        applicationStage.setTitle("Kfupm Event");
+        User.loadUsers();
+        loginPage(applicationStage);
 
     }
 
-    public static BorderPane navbar(User currentUser){
-        final double fontSizeLogo = 30;
-        final double fontSizeBtn = 20;
+    //Pages
+    public static void loginPage(Stage applicationStage){
 
-        HBox leftNavContainer = new HBox();
-        HBox rightNavContainer = new HBox();
-        BorderPane container = new BorderPane();
-
-        rightNavContainer.setAlignment(Pos.CENTER_RIGHT);
-        leftNavContainer.setAlignment(Pos.CENTER_LEFT);
-        leftNavContainer.setSpacing(8);
-
-        // nav
-        Label logo= new Label("Kfupm Event");
-        logo.setFont(Font.font("Arial", fontSizeLogo));
-
-        Button bt1 = new Button("Events");
-        bt1.setFont(Font.font("Arial", fontSizeBtn));
-
-        Button bt2 = new Button("My Tickets");
-        bt2.setFont(Font.font("Arial", fontSizeBtn));
-
-        leftNavContainer.getChildren().add(logo);
-        if(currentUser.isAdmin()){
-            Button bt3 = new Button("Admin Panel");
-            bt3.setFont(Font.font("Arial", fontSizeBtn));
-            leftNavContainer.getChildren().add(bt3);
-        }
-        leftNavContainer.getChildren().add(bt1);
-        leftNavContainer.getChildren().add(bt2);
-
-        // logout
-        Button logoutBtn = new Button("Logout");
-        logoutBtn.setFont(Font.font("Arial", fontSizeBtn));
-        rightNavContainer.getChildren().add(logoutBtn);
-
-        container.setLeft(leftNavContainer);
-        container.setRight(rightNavContainer);
-
-        return container;
-    }
-
-    public static User loginPage(Stage applicationStage){
         GridPane gridPane = new GridPane();
-        Scene scene = new Scene(gridPane);
+        Scene scene = new Scene(gridPane, WIN_WIDTH, WIN_HEIGHT);
         Label headerLabel = new Label("Login Screen");
-        headerLabel.setScaleY(1.5);
-        headerLabel.setScaleX(1.5);
+        headerLabel.setFont(HEADING_FONT);
         Label loginMassage = new Label();
         Label userFieldLabel = new Label("Username");
         TextField userField = new TextField();
@@ -105,14 +66,9 @@ public class Main extends Application {
                 try {
                     User user = User.getUsers().get(index);
                     {
-                        if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& user.isAdmin()&& userFound){
-                            System.out.println("login done successfully");
-                            System.out.println("I am an admin");
-                        }
-                        else if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& !user.isAdmin()&& userFound){
-                            System.out.println("login done successfully");
-                            System.out.println("I am an basic user");
-                            basicEvents(applicationStage);
+                        if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& userFound){
+                            currentUser = user;
+                            homePage(applicationStage);
                         }
                         else {
                             Alert alert = new Alert(Alert.AlertType.ERROR,"Wrong credentials");
@@ -121,12 +77,20 @@ public class Main extends Application {
                     }
                 }
                 catch (Exception e){
+                    System.out.println(userFound);
                     System.out.println("There are no users");
                 }
 
 
             }
         });
+        registerButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                registerPage(applicationStage);
+            }
+        });
+
         gridPane.add(headerLabel,3,1);
         gridPane.add(loginMassage,3,2);
         gridPane.add(userFieldLabel,2,4);
@@ -142,16 +106,243 @@ public class Main extends Application {
         applicationStage.setScene(scene);
         applicationStage.setTitle("Login");
         applicationStage.show();
-
-
-        return new User("Yousef", "123", true);
     }
+
+    public static void registerPage(Stage applicationStage){
+        final Font INPUT_FONT = Font.font("Arial", 0.03*WIN_WIDTH);
+        final Insets FIELD_PADDING = new Insets(0, 0, 0, 10);
+        final Font BTN_FONT = Font.font("Arial", WIN_WIDTH * 0.025);
+        //containers and general settings
+        BorderPane generalContainer = new BorderPane();
+        VBox centerContainer = new VBox();
+
+        centerContainer.setAlignment(Pos.TOP_CENTER);
+        centerContainer.setMaxWidth(0.8*WIN_WIDTH);
+        centerContainer.setSpacing(WIN_HEIGHT*0.05);
+        centerContainer.setBorder(Border.stroke(Paint.valueOf("Gray")));
+        centerContainer.setPadding(new Insets(15, 5, 10, 5));
+        centerContainer.setMaxHeight(0.7*WIN_HEIGHT);
+        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
+        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
+
+
+        generalContainer.setPadding(PADDING);
+        generalContainer.setTop(navbar(applicationStage));
+        generalContainer.setCenter(centerContainer);
+
+        //heading label
+        Label registerHeading = new Label("Register");
+        registerHeading.setFont(HEADING_FONT);
+        centerContainer.getChildren().add(registerHeading);
+
+        // USERNAME
+        //container
+        HBox usernameContainer = new HBox();
+        usernameContainer.setAlignment(Pos.CENTER_LEFT);
+        usernameContainer.setPadding(FIELD_PADDING);
+        usernameContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //username label
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.setFont(INPUT_FONT);
+        usernameContainer.getChildren().add(usernameLabel);
+
+        //username field
+        TextField usernameField = new TextField();
+        usernameField.setMinWidth(WIN_WIDTH*0.3);
+        usernameField.setMinHeight(WIN_HEIGHT*0.05);
+        usernameContainer.getChildren().add(usernameField);
+
+        centerContainer.getChildren().add(usernameContainer);
+
+        // PASSWORD
+        //container
+        HBox passwordContainer = new HBox();
+        passwordContainer.setAlignment(Pos.CENTER_LEFT);
+        passwordContainer.setPadding(FIELD_PADDING);
+        passwordContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //password label
+        Label passwordLabel = new Label("Password:");
+        passwordLabel.setFont(INPUT_FONT);
+        passwordContainer.getChildren().add(passwordLabel);
+
+        //password field
+        PasswordField passwordField = new PasswordField();
+        passwordField.setMinWidth(WIN_WIDTH*0.3);
+        passwordField.setMinHeight(WIN_HEIGHT*0.05);
+        passwordContainer.getChildren().add(passwordField);
+
+        centerContainer.getChildren().add(passwordContainer);
+
+        //ADMIN
+        //container
+        HBox adminContainer = new HBox();
+        adminContainer.setAlignment(Pos.CENTER_LEFT);
+        adminContainer.setPadding(FIELD_PADDING);
+        adminContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //admin label
+        Label adminLabel = new Label("Admin:");
+        adminLabel.setFont(INPUT_FONT);
+        adminContainer.getChildren().add(adminLabel);
+
+        //admin field
+        CheckBox adminField = new CheckBox();
+        adminContainer.getChildren().add(adminField);
+
+
+        centerContainer.getChildren().add(adminContainer);
+
+        //Buttons
+        //container
+        HBox buttonsContainer = new HBox();
+        buttonsContainer.setAlignment(Pos.CENTER_LEFT);
+        buttonsContainer.setPadding(FIELD_PADDING);
+        buttonsContainer.setSpacing(WIN_WIDTH*0.01);
+
+        //Save button
+        Button saveBtn = new Button("Save");
+        saveBtn.setFont(BTN_FONT);
+        saveBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+                boolean admin = adminField.isSelected();
+                if(User.validUsername(username)&& !username.isEmpty() && !password.isEmpty()){
+                    User.createUser(username, password, admin);
+                    loginPage(applicationStage);
+                }
+                else{
+                    if (username.isEmpty() || password.isEmpty()) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "You should fill all fields");
+                        alert.showAndWait();
+                    }
+                    else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Username already used");
+                        alert.showAndWait();
+                    }
+                }
+            }
+        });
+
+        buttonsContainer.getChildren().add(saveBtn);
+
+        //login button
+        Button loginBtn = new Button("Go Back To Login");
+        loginBtn.setFont(BTN_FONT);
+        loginBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                loginPage(applicationStage);
+            }
+        });
+        buttonsContainer.getChildren().add(loginBtn);
+
+        centerContainer.getChildren().add(buttonsContainer);
+        // scene and stage
+        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
+        applicationStage.setScene(scene);
+        applicationStage.show();
+    }
+    public static void homePage(Stage applicationStage){
+        BorderPane generalContainer = new BorderPane();
+
+        //root
+        generalContainer.setPadding(PADDING);
+        generalContainer.setTop(navbar(applicationStage));
+
+        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
+
+        applicationStage.setScene(scene);
+        applicationStage.show();
+    }
+
+    //Components
+    public static BorderPane navbar(Stage applicationStage){
+        final double fontSizeLogo = WIN_WIDTH * 0.04;
+        final double fontSizeBtn = WIN_WIDTH * 0.025;
+
+        HBox leftNavContainer = new HBox();
+        HBox rightNavContainer = new HBox();
+        BorderPane container = new BorderPane();
+        container.setPadding(new Insets(0, 0, 5, 0));
+
+        rightNavContainer.setAlignment(Pos.CENTER_RIGHT);
+        leftNavContainer.setAlignment(Pos.CENTER_LEFT);
+        leftNavContainer.setSpacing(8);
+
+        // nav
+
+        //logo
+        Label logo= new Label("Kfupm Event");
+        logo.setFont(Font.font("Georgia", fontSizeLogo));
+        leftNavContainer.getChildren().add(logo);
+
+        if(currentUser != null) {
+            // admin panel
+            if (currentUser.isAdmin()) {
+                Button bt3 = new Button("Admin Panel");
+                bt3.setFont(Font.font("Arial", fontSizeBtn));
+                bt3.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        registerPage(applicationStage);
+                    }
+                });
+                leftNavContainer.getChildren().add(bt3);
+            }
+
+            // events
+            Button bt1 = new Button("Events");
+            bt1.setFont(Font.font("Arial", fontSizeBtn));
+            bt1.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    homePage(applicationStage);
+                }
+            });
+            leftNavContainer.getChildren().add(bt1);
+
+            // my tickets
+            Button bt2 = new Button("My Tickets");
+            bt2.setFont(Font.font("Arial", fontSizeBtn));
+            bt2.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    homePage(applicationStage);
+                }
+            });
+            leftNavContainer.getChildren().add(bt2);
+
+
+            // logout
+            Button logoutBtn = new Button("Logout");
+            logoutBtn.setFont(Font.font("Arial", fontSizeBtn));
+            logoutBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    currentUser = null;
+                    loginPage(applicationStage);
+                }
+            });
+            rightNavContainer.getChildren().add(logoutBtn);
+        }
+        container.setLeft(leftNavContainer);
+        container.setRight(rightNavContainer);
+
+        return container;
+    }
+
+
 
     public static User basicEvents(Stage applicationStage) {
         Group root = new Group();
         Scene scene = new Scene(root);
-        applicationStage.setWidth(winWidth);
-        applicationStage.setHeight(winHeight);
+        applicationStage.setWidth(WIN_WIDTH);
+        applicationStage.setHeight(WIN_HEIGHT);
         TableView tableView = new TableView<>();
         ObservableList<Event> contentList = FXCollections.observableArrayList(Event.getEvents());
 
@@ -175,8 +366,8 @@ public class Main extends Application {
         bookingColumn.setCellValueFactory(new PropertyValueFactory("button"));
         tableView.getColumns().addAll(titleColumn, categoryColumn, descriptionColumn, dateColumn, timeColumn, locationColumn, capacityColumn, bookingColumn);
         tableView.setItems(contentList);
-        tableView.setPrefWidth(winWidth);
-        tableView.setPrefHeight(winHeight);
+        tableView.setPrefWidth(WIN_WIDTH);
+        tableView.setPrefHeight(WIN_HEIGHT);
         root.getChildren().add(tableView);
         applicationStage.setScene(scene);
         applicationStage.show();
@@ -186,13 +377,5 @@ public class Main extends Application {
 
 
 
-    public static Scene homePage(){
-        BorderPane root = new BorderPane();
 
-        //root
-        root.setPadding(new Insets(10, 8, 10, 8));
-        root.setTop(navbar(currentUser));
-
-        return new Scene(root, winWidth, winHeight);
-    }
 }
