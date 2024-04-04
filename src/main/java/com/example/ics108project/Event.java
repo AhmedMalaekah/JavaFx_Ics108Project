@@ -64,7 +64,6 @@ public class Event {
             }
         }
 
-
     }
     public  boolean isUpcoming(){
         if (date.after(new Date())){
