@@ -50,7 +50,6 @@ public class LoginPage extends Application {
                         if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& user.isAdmin()&& userFound){
                             System.out.println("login done successfully");
                             System.out.println("I am an admin");
-                            basicEvents(stage);
                         }
                         else if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& !user.isAdmin()&& userFound){
                             System.out.println("login done successfully");

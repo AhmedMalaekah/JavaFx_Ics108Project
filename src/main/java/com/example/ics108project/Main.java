@@ -15,12 +15,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import Authentication.User;
 
-import java.util.Objects;
+import java.text.ParseException;
 
 public class Main extends Application {
 
@@ -31,8 +34,9 @@ public class Main extends Application {
     public static final Insets PADDING  = new Insets(10, 8, 10, 8);
     public static User currentUser;
     @Override
-    public void start(Stage applicationStage) {
+    public void start(Stage applicationStage) throws ParseException {
         applicationStage.setTitle("Kfupm Event");
+        Event.loadEvents();
         User.loadUsers();
         loginPage(applicationStage);
 
@@ -253,6 +257,7 @@ public class Main extends Application {
         //root
         generalContainer.setPadding(PADDING);
         generalContainer.setTop(navbar(applicationStage));
+        generalContainer.setCenter(basicEvent(applicationStage));
 
         Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
 
@@ -368,6 +373,84 @@ public class Main extends Application {
         container.setRight(rightNavContainer);
 
         return container;
+    }
+    public static BorderPane basicEvent(Stage applicationStage){
+        applicationStage.setHeight(WIN_HEIGHT);
+        applicationStage.setWidth(WIN_WIDTH);
+        BorderPane borderPane = new BorderPane();
+        ScrollPane scrollPane = new ScrollPane();
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        Scene scene = new Scene(borderPane);
+//        Group group = groupClone();
+        scrollPane.setContent(vBox);
+        borderPane.setCenter(scrollPane);
+//        vBox.getChildren().addAll(group);
+
+        for (int i = 0; i < Event.getEvents().size(); i++) {
+            Group group = groupClone(Event.getEvents().get(i));
+            vBox.getChildren().add(group);
+
+
+        }
+        vBox.setMinWidth(600);
+        vBox.setMinHeight(520);
+        applicationStage.setScene(scene);
+        applicationStage.show();
+
+        return borderPane;
+
+
+    }
+    public static Group groupClone(Event event){
+        Group clonedGroup = new Group();
+        Rectangle rectangle = new Rectangle();
+        rectangle.setHeight(175);
+        rectangle.setWidth(600);
+        rectangle.setFill(Color.LIGHTGRAY);
+        rectangle.setStroke(Color.BLACK);
+        rectangle.setStrokeType(StrokeType.INSIDE);
+        Label eventTitle = new Label("Event Title");
+        eventTitle.setText(event.getTitle());
+        eventTitle.setLayoutX(13);
+        eventTitle.setLayoutY(2);
+        eventTitle.setFont(Font.font("Arial",27));
+        Label byUser = new Label("by User");
+        byUser.setLayoutX(156);
+        byUser.setLayoutY(12);
+        byUser.setFont(Font.font("Arial",14));
+        Label category = new Label("category");
+        category.setText(event.getCategory());
+        category.setLayoutX(17);
+        category.setLayoutY(39);
+        category.setFont(Font.font("Arial",15));
+        Label description = new Label("description");
+        description.setText(event.getDescription());
+        description.setLayoutX(17);
+        description.setLayoutY(66);
+        description.setFont(Font.font("Arial",15));
+        Label dateAndTime = new Label("date:Time");
+        dateAndTime.setText(String.format("%s : %s",event.getDateString(),event.getTime()));
+        dateAndTime.setLayoutX(450);
+        dateAndTime.setLayoutY(12);
+        dateAndTime.setFont(Font.font("Arial",15));
+        Label location = new Label("location");
+        location.setText(event.getLocation());
+        location.setLayoutX(450);
+        location.setLayoutY(39);
+        location.setFont(Font.font("Arial",15));
+        Button bookButton = new Button("book");
+        bookButton.setLayoutX(530);
+        bookButton.setLayoutY(130);
+        bookButton.setFont(Font.font("Arial",15));
+        Label seatsLeft = new Label("#seatsLeft");
+        seatsLeft.setText(String.valueOf(event.getCapacityNum()));
+        seatsLeft.setLayoutX(500);
+        seatsLeft.setLayoutY(134);
+        seatsLeft.setFont(Font.font("Arial",15));
+        clonedGroup.getChildren().addAll(rectangle,eventTitle,byUser,category,description,dateAndTime,location,bookButton,seatsLeft);
+        return clonedGroup;
+
     }
 
 }

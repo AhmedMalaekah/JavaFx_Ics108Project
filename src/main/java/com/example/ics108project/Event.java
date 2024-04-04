@@ -163,4 +163,8 @@ public class Event {
     public void setCapacity(int capacity) {
         this.capacityNum = capacityNum;
     }
+    public static void loadEvents() throws ParseException {
+        Event e1 = new Event("event1","workshop","java learning workshop",new SimpleDateFormat("dd/MM/yyyy").parse("02/04/2024"),"11PM","building 22", 150);
+        Event e2 = new Event("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150);
+    }
 }
