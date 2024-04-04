@@ -259,6 +259,40 @@ public class Main extends Application {
         applicationStage.setScene(scene);
         applicationStage.show();
     }
+    public static void eventsPage(Stage applicationStage) {
+        Group root = new Group();
+        Scene scene = new Scene(root);
+        TableView tableView = new TableView<>();
+        ObservableList<Event> contentList = FXCollections.observableArrayList(Event.getEvents());
+
+        TableColumn<Event, String> titleColumn = new TableColumn("Title");
+        TableColumn<Event, String> categoryColumn = new TableColumn("Category");
+        TableColumn<Event, String> descriptionColumn = new TableColumn("Description");
+        TableColumn<Event, String> dateColumn = new TableColumn("Date");
+        TableColumn<Event, String> timeColumn = new TableColumn("Time");
+        TableColumn<Event, String> locationColumn = new TableColumn("Location");
+        TableColumn<Event, Integer> capacityColumn = new TableColumn("Capacity");
+        TableColumn bookingColumn = new TableColumn("Booking");
+
+
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
+        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacityNum"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateString"));
+        bookingColumn.setCellValueFactory(new PropertyValueFactory("button"));
+        tableView.getColumns().addAll(titleColumn, categoryColumn, descriptionColumn, dateColumn, timeColumn, locationColumn, capacityColumn, bookingColumn);
+        tableView.setItems(contentList);
+        tableView.setPrefWidth(WIN_WIDTH);
+        tableView.setPrefHeight(WIN_HEIGHT);
+        root.getChildren().add(tableView);
+        applicationStage.setScene(scene);
+        applicationStage.show();
+    }
+
+
 
     //Components
     public static BorderPane navbar(Stage applicationStage){
@@ -301,7 +335,7 @@ public class Main extends Application {
             bt1.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    homePage(applicationStage);
+                    eventsPage(applicationStage);
                 }
             });
             leftNavContainer.getChildren().add(bt1);
@@ -335,47 +369,5 @@ public class Main extends Application {
 
         return container;
     }
-
-
-
-    public static User basicEvents(Stage applicationStage) {
-        Group root = new Group();
-        Scene scene = new Scene(root);
-        applicationStage.setWidth(WIN_WIDTH);
-        applicationStage.setHeight(WIN_HEIGHT);
-        TableView tableView = new TableView<>();
-        ObservableList<Event> contentList = FXCollections.observableArrayList(Event.getEvents());
-
-        TableColumn<Event, String> titleColumn = new TableColumn("Title");
-        TableColumn<Event, String> categoryColumn = new TableColumn("Category");
-        TableColumn<Event, String> descriptionColumn = new TableColumn("Description");
-        TableColumn<Event, String> dateColumn = new TableColumn("Date");
-        TableColumn<Event, String> timeColumn = new TableColumn("Time");
-        TableColumn<Event, String> locationColumn = new TableColumn("Location");
-        TableColumn<Event, Integer> capacityColumn = new TableColumn("Capacity");
-        TableColumn bookingColumn = new TableColumn("Booking");
-
-
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacityNum"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateString"));
-        bookingColumn.setCellValueFactory(new PropertyValueFactory("button"));
-        tableView.getColumns().addAll(titleColumn, categoryColumn, descriptionColumn, dateColumn, timeColumn, locationColumn, capacityColumn, bookingColumn);
-        tableView.setItems(contentList);
-        tableView.setPrefWidth(WIN_WIDTH);
-        tableView.setPrefHeight(WIN_HEIGHT);
-        root.getChildren().add(tableView);
-        applicationStage.setScene(scene);
-        applicationStage.show();
-        return new User("Yousef", "123", true);
-    }
-
-
-
-
 
 }
