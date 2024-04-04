@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -27,45 +28,123 @@
          </font>
       </Button>
       <Label layoutX="286.0" layoutY="77.0" />
-      <ScrollPane fx:id="scrollPane" layoutX="44.0" layoutY="86.0" prefHeight="372.0" prefWidth="600.0">
+      <ScrollPane layoutX="43.0" layoutY="78.0" prefHeight="344.0" prefWidth="615.0">
          <content>
-            <Group fx:id="groupForEvent">
+            <VBox prefHeight="520.0" prefWidth="600.0">
                <children>
-                  <Rectangle fx:id="rectangleBox" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="175.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
-                  <Label fx:id="eventtitleText" layoutX="13.0" layoutY="2.0" text="com.example.ics108project.Event Title">
-                     <font>
-                        <Font size="27.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="byusertext" layoutX="156.0" layoutY="12.0" text="By User">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="categoryText" layoutX="17.0" layoutY="39.0" text="category">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="descriptonText" layoutX="17.0" layoutY="66.0" text="description">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="dateTimeText" layoutX="498.0" layoutY="12.0" text="Date : Time">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="locationText" layoutX="509.0" layoutY="39.0" text="location">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="bookButton" layoutX="530.0" layoutY="130.0" mnemonicParsing="false" onAction="#bookEvent" text="Book" textFill="#10b3cc" />
-                  <Label fx:id="seatsLeftText" layoutX="451.0" layoutY="134.0" text="# seats left" />
+                  <Group fx:id="groupForEvent11">
+                     <children>
+                        <Rectangle fx:id="rectangleBox11" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="175.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+                        <Label fx:id="eventtitleText11" layoutX="13.0" layoutY="2.0" text="Event Title">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="byusertext11" layoutX="156.0" layoutY="12.0" text="By User">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="categoryText11" layoutX="17.0" layoutY="39.0" text="category">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="descriptonText11" layoutX="17.0" layoutY="66.0" text="description">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="dateTimeText11" layoutX="498.0" layoutY="12.0" text="Date : Time">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="locationText11" layoutX="509.0" layoutY="39.0" text="location">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="bookButton11" layoutX="530.0" layoutY="130.0" mnemonicParsing="false" onAction="#bookEvent" text="Book" textFill="#10b3cc" />
+                        <Label fx:id="seatsLeftText11" layoutX="451.0" layoutY="134.0" text="# seats left" />
+                     </children>
+                  </Group>
+                  <Group fx:id="groupForEvent111" layoutX="10.0" layoutY="10.0">
+                     <children>
+                        <Rectangle fx:id="rectangleBox111" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="175.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+                        <Label fx:id="eventtitleText111" layoutX="13.0" layoutY="2.0" text="Event Title">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="byusertext111" layoutX="156.0" layoutY="12.0" text="By User">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="categoryText111" layoutX="17.0" layoutY="39.0" text="category">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="descriptonText111" layoutX="17.0" layoutY="66.0" text="description">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="dateTimeText111" layoutX="498.0" layoutY="12.0" text="Date : Time">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="locationText111" layoutX="509.0" layoutY="39.0" text="location">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="bookButton111" layoutX="530.0" layoutY="130.0" mnemonicParsing="false" onAction="#bookEvent" text="Book" textFill="#10b3cc" />
+                        <Label fx:id="seatsLeftText111" layoutX="451.0" layoutY="134.0" text="# seats left" />
+                     </children>
+                  </Group>
+                  <Group fx:id="groupForEvent1111" layoutX="10.0" layoutY="185.0">
+                     <children>
+                        <Rectangle fx:id="rectangleBox1111" arcHeight="5.0" arcWidth="5.0" fill="LIGHTGRAY" height="175.0" stroke="BLACK" strokeType="INSIDE" width="600.0" />
+                        <Label fx:id="eventtitleText1111" layoutX="13.0" layoutY="2.0" text="Event Title">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="byusertext1111" layoutX="156.0" layoutY="12.0" text="By User">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="categoryText1111" layoutX="17.0" layoutY="39.0" text="category">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="descriptonText1111" layoutX="17.0" layoutY="66.0" text="description">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="dateTimeText1111" layoutX="498.0" layoutY="12.0" text="Date : Time">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="locationText1111" layoutX="509.0" layoutY="39.0" text="location">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="bookButton1111" layoutX="530.0" layoutY="130.0" mnemonicParsing="false" onAction="#bookEvent" text="Book" textFill="#10b3cc" />
+                        <Label fx:id="seatsLeftText1111" layoutX="451.0" layoutY="134.0" text="# seats left" />
+                     </children>
+                  </Group>
                </children>
-            </Group>
+            </VBox>
          </content>
       </ScrollPane>
    </children>

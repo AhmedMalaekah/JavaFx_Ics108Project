@@ -12,6 +12,8 @@ public class SecBasicEvents extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SecBasicEvents.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+//        SecBasicEventsController test = new SecBasicEventsController();
+//        test.duplicateGroup();
 
         stage.setTitle("KFUPM Events Booking System");
         stage.setScene(scene);

@@ -1,16 +1,17 @@
 package com.example.ics108project;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
 public class SecBasicEventsController {
-
-//    private void duplicateGroup(){ Group duplicatedGroup = new Group(); duplicatedGroup.getProperties().putAll(groupForEvent.getProperties()); duplicatedGroup.setStyle(groupForEvent.getStyle()); duplicatedGroup.setLayoutX(groupForEvent.getLayoutX()+50); duplicatedGroup.setLayoutY(groupForEvent.getLayoutY()+50); scrollPane.getChildren().add(duplicatedGroup); }
 
     @FXML
     private Button bookButton;
@@ -68,5 +69,6 @@ public class SecBasicEventsController {
     void goToMyEvents(ActionEvent event) {
 
     }
+
 
 }
