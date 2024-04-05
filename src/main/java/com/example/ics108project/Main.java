@@ -75,7 +75,9 @@ public class Main extends Application {
                             homePage(applicationStage);
                         }
                         else {
-                            Alert alert = new Alert(Alert.AlertType.ERROR,"Wrong credentials");
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Wrong credentials");
+                            alert.setContentText("You should enter correct credentials");
                             alert.showAndWait();
                         }
                     }
