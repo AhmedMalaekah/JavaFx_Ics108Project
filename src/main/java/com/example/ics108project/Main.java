@@ -340,7 +340,7 @@ public class Main extends Application {
             bt1.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    eventsPage(applicationStage);
+                    homePage(applicationStage);
                 }
             });
             leftNavContainer.getChildren().add(bt1);
@@ -351,7 +351,7 @@ public class Main extends Application {
             bt2.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    homePage(applicationStage);
+                    eventsPage(applicationStage);
                 }
             });
             leftNavContainer.getChildren().add(bt2);
@@ -374,35 +374,25 @@ public class Main extends Application {
 
         return container;
     }
-    public static BorderPane basicEvent(Stage applicationStage){
-        applicationStage.setHeight(WIN_HEIGHT);
-        applicationStage.setWidth(WIN_WIDTH);
-        BorderPane borderPane = new BorderPane();
+    public static ScrollPane basicEvent(Stage applicationStage){
+        // containers
         ScrollPane scrollPane = new ScrollPane();
         VBox vBox = new VBox();
-        HBox hBox = new HBox();
-        Scene scene = new Scene(borderPane);
-//        Group group = groupClone();
-        scrollPane.setContent(vBox);
-        borderPane.setCenter(scrollPane);
-//        vBox.getChildren().addAll(group);
 
-        for (int i = 0; i < Event.getEvents().size(); i++) {
-            Group group = groupClone(Event.getEvents().get(i));
-            vBox.getChildren().add(group);
-
-
-        }
         vBox.setMinWidth(600);
         vBox.setMinHeight(520);
-        applicationStage.setScene(scene);
-        applicationStage.show();
 
-        return borderPane;
+        scrollPane.setContent(vBox);
 
+        for (int i = 0; i < Event.getEvents().size(); i++) {
+            Group group = eventBox(Event.getEvents().get(i));
+            vBox.getChildren().add(group);
+        }
+
+        return scrollPane;
 
     }
-    public static Group groupClone(Event event){
+    public static Group eventBox(Event event){
         Group clonedGroup = new Group();
         Rectangle rectangle = new Rectangle();
         rectangle.setHeight(175);
