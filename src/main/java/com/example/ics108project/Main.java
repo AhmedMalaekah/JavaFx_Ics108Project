@@ -69,12 +69,15 @@ public class Main extends Application {
                 else {index =0;}
                 try {
                     User user = User.getUsers().get(index);
+                    currentUser = user;
                     {
-                        if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& userFound){
-                            currentUser = user;
+                        if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& userFound && !user.isAdmin()){
                             homePage(applicationStage);
-                        }
-                        else {
+                        } else if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& user.isAdmin()&& userFound) {
+
+                            homePage(applicationStage);
+
+                        } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Wrong credentials");
                             alert.setContentText("You should enter correct credentials");

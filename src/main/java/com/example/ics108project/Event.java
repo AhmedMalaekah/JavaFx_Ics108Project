@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
 import java.text.*;
+
+import Authentication.User;
 import javafx.scene.control.Button;
 public class Event {
     private String title;
@@ -18,6 +20,7 @@ public class Event {
     private Ticket[] capacity;
     private int capacityNum;
     private Button button;
+    private User user;
 
     private static  ArrayList<Event> events = new ArrayList<>();
 
@@ -34,7 +37,7 @@ public class Event {
     }
 
 
-    public Event(String title, String category, String description, Date date, String time, String location, int capacityNum) {
+    public Event(String title, String category, String description, Date date, String time, String location, int capacityNum,User user) {
         this.title = title;
         this.category = category;
         this.description = description;
@@ -45,11 +48,12 @@ public class Event {
         this.capacityNum = capacityNum;
         this.capacity = new Ticket[capacityNum];
         this.button = new Button("book");
+        this.user = user;
         Event.getEvents().add(this);
     }
     // may we make several methods and each one of them edit specific thing
-    public static void addEvent(String title, String category, String description, Date date, String time, String location, int capacity){
-        events.add(new Event(title,category,description,date,time,location,capacity));
+    public static void addEvent(String title, String category, String description, Date date, String time, String location, int capacity,User user){
+        events.add(new Event(title,category,description,date,time,location,capacity,user));
     }
     public  static void addEvent(Event event){
         events.add(event);
@@ -145,6 +149,14 @@ public class Event {
         this.time = time;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -164,7 +176,7 @@ public class Event {
         this.capacityNum = capacityNum;
     }
     public static void loadEvents() throws ParseException {
-        Event e1 = new Event("event1","workshop","java learning workshop",new SimpleDateFormat("dd/MM/yyyy").parse("02/04/2024"),"11PM","building 22", 150);
-        Event e2 = new Event("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150);
+        Event e1 = new Event("event1","workshop","java learning workshop",new SimpleDateFormat("dd/MM/yyyy").parse("02/04/2024"),"11PM","building 22", 150,new User("Ahmed","test",true));
+        Event e2 = new Event("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
     }
 }
