@@ -302,8 +302,6 @@ public class Main extends Application {
         applicationStage.show();
     }
 
-
-
     //Components
     public static BorderPane navbar(Stage applicationStage){
         final double fontSizeLogo = WIN_WIDTH * 0.04;
@@ -405,44 +403,53 @@ public class Main extends Application {
         rectangle.setFill(Color.LIGHTGRAY);
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeType(StrokeType.INSIDE);
+
         Label eventTitle = new Label("Event Title");
         eventTitle.setText(event.getTitle());
         eventTitle.setLayoutX(13);
         eventTitle.setLayoutY(2);
         eventTitle.setFont(Font.font("Arial",27));
+
         Label byUser = new Label("by User");
         byUser.setLayoutX(156);
         byUser.setLayoutY(12);
         byUser.setFont(Font.font("Arial",14));
+
         Label category = new Label("category");
         category.setText(event.getCategory());
         category.setLayoutX(17);
         category.setLayoutY(39);
         category.setFont(Font.font("Arial",15));
+
         Label description = new Label("description");
         description.setText(event.getDescription());
         description.setLayoutX(17);
         description.setLayoutY(66);
         description.setFont(Font.font("Arial",15));
+
         Label dateAndTime = new Label("date:Time");
         dateAndTime.setText(String.format("%s : %s",event.getDateString(),event.getTime()));
         dateAndTime.setLayoutX(450);
         dateAndTime.setLayoutY(12);
         dateAndTime.setFont(Font.font("Arial",15));
+
         Label location = new Label("location");
         location.setText(event.getLocation());
         location.setLayoutX(450);
         location.setLayoutY(39);
         location.setFont(Font.font("Arial",15));
+
         Button bookButton = new Button("book");
         bookButton.setLayoutX(530);
         bookButton.setLayoutY(130);
         bookButton.setFont(Font.font("Arial",15));
+
         Label seatsLeft = new Label("#seatsLeft");
         seatsLeft.setText(String.valueOf(event.getCapacityNum()));
         seatsLeft.setLayoutX(500);
         seatsLeft.setLayoutY(134);
         seatsLeft.setFont(Font.font("Arial",15));
+
         clonedGroup.getChildren().addAll(rectangle,eventTitle,byUser,category,description,dateAndTime,location,bookButton,seatsLeft);
         return clonedGroup;
 

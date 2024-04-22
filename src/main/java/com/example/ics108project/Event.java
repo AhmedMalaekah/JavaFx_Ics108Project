@@ -19,7 +19,7 @@ public class Event {
     private String location;
     private Ticket[] capacity;
     private int capacityNum;
-    private Button button;
+//    private Button button;
     private User user;
 
     private static  ArrayList<Event> events = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Event {
         this.time = "noTime";
         this.location =" noLocation";
         this.capacity = null;
-        this.button = new Button("book");
+//        this.button = new Button("book");
     }
 
 
@@ -47,7 +47,7 @@ public class Event {
         this.location = location;
         this.capacityNum = capacityNum;
         this.capacity = new Ticket[capacityNum];
-        this.button = new Button("book");
+//        this.button = new Button("book");
         this.user = user;
         Event.getEvents().add(this);
     }
@@ -84,13 +84,13 @@ public class Event {
         this.title = title;
     }
 
-    public Button getButton() {
-        return button;
-    }
+//    public Button getButton() {
+//        return button;
+//    }
 
-    public void setButton(Button button) {
-        this.button = button;
-    }
+//    public void setButton(Button button) {
+//        this.button = button;
+//    }
 
     public String getDateString() {
         return dateString;
