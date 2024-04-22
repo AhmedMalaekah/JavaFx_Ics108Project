@@ -297,8 +297,6 @@ public class Main extends Application {
         applicationStage.show();
     }
 
-
-
     //Components
     public static BorderPane navbar(Stage applicationStage){
         final double fontSizeLogo = WIN_WIDTH * 0.04;

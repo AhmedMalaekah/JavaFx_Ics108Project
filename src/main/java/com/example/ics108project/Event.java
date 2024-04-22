@@ -12,7 +12,7 @@ public class Event {
     private String category;
     private String description;
     private Date date;
-    private String dateString;
+
     private String time;
     private String location;
     private Ticket[] capacity;
@@ -26,7 +26,6 @@ public class Event {
         this.title = "noTitle";
         this.category = "noCategory";
         this.description = "noDescription";
-        this.dateString = "noDate";
         this.time = "noTime";
         this.location =" noLocation";
         this.capacity = null;
@@ -40,30 +39,21 @@ public class Event {
         this.description = description;
         this.date = date;
         this.time = time;
-        this.dateString = DateFormat.getDateInstance().format(date.getTime());
         this.location = location;
         this.capacityNum = capacityNum;
         this.capacity = new Ticket[capacityNum];
         this.button = new Button("book");
-        Event.getEvents().add(this);
     }
-    // may we make several methods and each one of them edit specific thing
-    public static void addEvent(String title, String category, String description, Date date, String time, String location, int capacity){
-        events.add(new Event(title,category,description,date,time,location,capacity));
-    }
-    public  static void addEvent(Event event){
+
+    public static void createEvent(String title, String category, String description, Date date, String time, String location, int capacityNum){
+        Event event = new Event(title, category, description, date, time, location, capacityNum);
         events.add(event);
     }
     public static ArrayList<Event> getEvents() {
         return events;
     }
-    public static void delEvent(String eventName){
-        for (int i = 0; i < events.size(); i++) {
-            if (events.get(i).title.equals(eventName)){
-                events.remove(i);
-            }
-        }
-
+    public static void delEvent(Event event){
+        events.remove(event);
     }
     public  boolean isUpcoming(){
         if (date.after(new Date())){
@@ -89,11 +79,7 @@ public class Event {
     }
 
     public String getDateString() {
-        return dateString;
-    }
-
-    public void setDateString(String dateString) {
-        this.dateString = dateString;
+        return DateFormat.getDateInstance().format(this.date.getTime());
     }
 
     public String getCategory() {
@@ -160,7 +146,7 @@ public class Event {
     public void setCapacity(Ticket[] capacity) {
         this.capacity = capacity;
     }
-    public void setCapacity(int capacity) {
+    public void setCapacity(int capacityNum) {
         this.capacityNum = capacityNum;
     }
     public static void loadEvents() throws ParseException {
