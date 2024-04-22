@@ -27,7 +27,7 @@ public class User {
 
     public User() {
         this.username = "none";
-        this.passwaord = "nopass";
+        this.passwaord = "noPass";
     }
 
     public boolean checkPassword(String passwaord){
@@ -52,11 +52,6 @@ public class User {
             return true;
         }
 
-    }
-    private static void fillUsers(){
-        for (int i = 0; i < users.size(); i++) {
-            usernames.add(users.get(i).getUsername());
-        }
     }
     public boolean isAdmin(){
         if (admin){
