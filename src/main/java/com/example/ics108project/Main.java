@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -44,24 +43,108 @@ public class Main extends Application {
 
     //Pages
     public static void loginPage(Stage applicationStage){
+        final Font INPUT_FONT = Font.font("Arial", 0.03*WIN_WIDTH);
+        final Insets FIELD_PADDING = new Insets(0, 0, 0, 10);
+        final Font BTN_FONT = Font.font("Arial", WIN_WIDTH * 0.025);
+        //containers and general settings
+        BorderPane generalContainer = new BorderPane();
+        VBox centerContainer = new VBox();
 
-        GridPane gridPane = new GridPane();
-        Scene scene = new Scene(gridPane, WIN_WIDTH, WIN_HEIGHT);
-        Label headerLabel = new Label("Login Screen");
-        headerLabel.setFont(HEADING_FONT);
-        Label loginMassage = new Label();
-        Label userFieldLabel = new Label("Username");
-        TextField userField = new TextField();
-        Label passFieldLabel = new Label("Password");
-        PasswordField passField = new PasswordField();
+        centerContainer.setAlignment(Pos.TOP_CENTER);
+        centerContainer.setMaxWidth(0.8*WIN_WIDTH);
+        centerContainer.setSpacing(WIN_HEIGHT*0.05);
+        centerContainer.setBorder(Border.stroke(Paint.valueOf("Gray")));
+        centerContainer.setPadding(new Insets(15, 5, 10, 5));
+        centerContainer.setMaxHeight(0.7*WIN_HEIGHT);
+        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
+        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
+
+
+        generalContainer.setPadding(PADDING);
+        generalContainer.setTop(navbar(applicationStage));
+        generalContainer.setCenter(centerContainer);
+
+        //heading label
+        Label registerHeading = new Label("Login");
+        registerHeading.setFont(HEADING_FONT);
+        centerContainer.getChildren().add(registerHeading);
+
+        // USERNAME
+        //container
+        HBox usernameContainer = new HBox();
+        usernameContainer.setAlignment(Pos.CENTER_LEFT);
+        usernameContainer.setPadding(FIELD_PADDING);
+        usernameContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //username label
+        Label usernameLabel = new Label("Username:");
+        usernameLabel.setFont(INPUT_FONT);
+        usernameContainer.getChildren().add(usernameLabel);
+
+        //username field
+        TextField usernameField = new TextField();
+        usernameField.setMinWidth(WIN_WIDTH*0.3);
+        usernameField.setMinHeight(WIN_HEIGHT*0.05);
+        usernameContainer.getChildren().add(usernameField);
+
+        centerContainer.getChildren().add(usernameContainer);
+
+        // PASSWORD
+        //container
+        HBox passwordContainer = new HBox();
+        passwordContainer.setAlignment(Pos.CENTER_LEFT);
+        passwordContainer.setPadding(FIELD_PADDING);
+        passwordContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //password label
+        Label passwordLabel = new Label("Password:");
+        passwordLabel.setFont(INPUT_FONT);
+        passwordContainer.getChildren().add(passwordLabel);
+
+        //password field
+        PasswordField passwordField = new PasswordField();
+        passwordField.setMinWidth(WIN_WIDTH*0.3);
+        passwordField.setMinHeight(WIN_HEIGHT*0.05);
+        passwordContainer.getChildren().add(passwordField);
+
+        centerContainer.getChildren().add(passwordContainer);
+
+        //ADMIN
+        //container
+//        HBox adminContainer = new HBox();
+//        adminContainer.setAlignment(Pos.CENTER_LEFT);
+//        adminContainer.setPadding(FIELD_PADDING);
+//        adminContainer.setSpacing(WIN_WIDTH*0.03);
+//
+//        //admin label
+//        Label adminLabel = new Label("Admin:");
+//        adminLabel.setFont(INPUT_FONT);
+//        adminContainer.getChildren().add(adminLabel);
+//
+//        //admin field
+//        CheckBox adminField = new CheckBox();
+//        adminContainer.getChildren().add(adminField);
+
+
+//        centerContainer.getChildren().add(adminContainer);
+
+        //Buttons
+        //container
+        HBox buttonsContainer = new HBox();
+        buttonsContainer.setAlignment(Pos.CENTER_LEFT);
+        buttonsContainer.setPadding(FIELD_PADDING);
+        buttonsContainer.setSpacing(WIN_WIDTH*0.01);
+
+        //Save button
         Button loginButton = new Button("Login");
-        Button registerButton = new Button("Register");
+        loginButton.setFont(BTN_FONT);
         loginButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 boolean userFound = false;
 
-                int index = User.getUsernames().indexOf(userField.getText());
+                int index = User.getUsernames().indexOf(usernameField.getText());
                 if (index != -1){
                     userFound = true;
 
@@ -71,9 +154,9 @@ public class Main extends Application {
                     User user = User.getUsers().get(index);
                     currentUser = user;
                     {
-                        if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& userFound && !user.isAdmin()){
+                        if (user.getUsername().equals(usernameField.getText())&& user.checkPassword(passwordField.getText())&& userFound && !user.isAdmin()){
                             homePage(applicationStage);
-                        } else if (user.getUsername().equals(userField.getText())&& user.checkPassword(passField.getText())&& user.isAdmin()&& userFound) {
+                        } else if (user.getUsername().equals(usernameField.getText())&& user.checkPassword(passwordField.getText())&& user.isAdmin()&& userFound) {
 
                             homePage(applicationStage);
 
@@ -93,27 +176,24 @@ public class Main extends Application {
 
             }
         });
+
+        buttonsContainer.getChildren().add(loginButton);
+
+        //login button
+        Button registerButton = new Button("Register");
+        registerButton.setFont(BTN_FONT);
         registerButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 registerPage(applicationStage);
             }
         });
+        buttonsContainer.getChildren().add(registerButton);
 
-        gridPane.add(headerLabel,3,1);
-        gridPane.add(loginMassage,3,2);
-        gridPane.add(userFieldLabel,2,4);
-        gridPane.add(passFieldLabel,3,4);
-        gridPane.add(userField,2,5);
-        gridPane.add(passField,3,5);
-        gridPane.add(loginButton,5,5);
-        gridPane.add(registerButton,6,5);
-        Insets gridPadding = new Insets(10,10,10,10);
-        gridPane.setPadding(gridPadding);
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        centerContainer.getChildren().add(buttonsContainer);
+        // scene and stage
+        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
         applicationStage.setScene(scene);
-        applicationStage.setTitle("Login");
         applicationStage.show();
     }
 
@@ -455,4 +535,10 @@ public class Main extends Application {
 
     }
 
+//        registerButton.setOnAction(new EventHandler<ActionEvent>() {
+//        @Override
+//        public void handle(ActionEvent actionEvent) {
+//            registerPage(applicationStage);
+//        }
+//    });
 }
