@@ -110,25 +110,6 @@ public class Main extends Application {
 
         centerContainer.getChildren().add(passwordContainer);
 
-        //ADMIN
-        //container
-//        HBox adminContainer = new HBox();
-//        adminContainer.setAlignment(Pos.CENTER_LEFT);
-//        adminContainer.setPadding(FIELD_PADDING);
-//        adminContainer.setSpacing(WIN_WIDTH*0.03);
-//
-//        //admin label
-//        Label adminLabel = new Label("Admin:");
-//        adminLabel.setFont(INPUT_FONT);
-//        adminContainer.getChildren().add(adminLabel);
-//
-//        //admin field
-//        CheckBox adminField = new CheckBox();
-//        adminContainer.getChildren().add(adminField);
-
-
-//        centerContainer.getChildren().add(adminContainer);
-
         //Buttons
         //container
         HBox buttonsContainer = new HBox();
@@ -338,11 +319,16 @@ public class Main extends Application {
     }
     public static void homePage(Stage applicationStage){
         BorderPane generalContainer = new BorderPane();
+        // Settings for events page
+        ScrollPane centerContainer = basicEvent(applicationStage);
+        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
+        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
 
         //root
         generalContainer.setPadding(PADDING);
         generalContainer.setTop(navbar(applicationStage));
-        generalContainer.setCenter(basicEvent(applicationStage));
+        generalContainer.setCenter(centerContainer);
 
         Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
 
@@ -535,10 +521,4 @@ public class Main extends Application {
 
     }
 
-//        registerButton.setOnAction(new EventHandler<ActionEvent>() {
-//        @Override
-//        public void handle(ActionEvent actionEvent) {
-//            registerPage(applicationStage);
-//        }
-//    });
 }
