@@ -321,6 +321,7 @@ public class Main extends Application {
         BorderPane generalContainer = new BorderPane();
         // Settings for events page
         ScrollPane centerContainer = basicEvent(applicationStage);
+
         BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
         BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
 
@@ -446,11 +447,13 @@ public class Main extends Application {
     public static ScrollPane basicEvent(Stage applicationStage){
         // containers
         ScrollPane scrollPane = new ScrollPane();
-        VBox vBox = new VBox();
+        scrollPane.setMaxHeight(700);
+        scrollPane.setMaxWidth(615);
 
+
+        VBox vBox = new VBox(5);
         vBox.setMinWidth(600);
         vBox.setMinHeight(520);
-
         scrollPane.setContent(vBox);
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
@@ -470,6 +473,9 @@ public class Main extends Application {
         rectangle.setStroke(Color.BLACK);
         rectangle.setStrokeType(StrokeType.INSIDE);
 
+
+        //Labels
+
         Label eventTitle = new Label("Event Title");
         eventTitle.setText(event.getTitle());
         eventTitle.setLayoutX(13);
@@ -477,8 +483,8 @@ public class Main extends Application {
         eventTitle.setFont(Font.font("Arial",27));
 
         Label byUser = new Label("by User");
-        byUser.setLayoutX(156);
-        byUser.setLayoutY(12);
+        byUser.setLayoutX(17);
+        byUser.setLayoutY(130);
         byUser.setFont(Font.font("Arial",14));
 
         Label category = new Label("category");
@@ -492,6 +498,8 @@ public class Main extends Application {
         description.setLayoutX(17);
         description.setLayoutY(66);
         description.setFont(Font.font("Arial",15));
+        description.setWrapText(true);
+        description.setMaxHeight(20);
 
         Label dateAndTime = new Label("date:Time");
         dateAndTime.setText(String.format("%s : %s",event.getDateString(),event.getTime()));
@@ -505,16 +513,19 @@ public class Main extends Application {
         location.setLayoutY(39);
         location.setFont(Font.font("Arial",15));
 
-        Button bookButton = new Button("book");
-        bookButton.setLayoutX(530);
-        bookButton.setLayoutY(130);
-        bookButton.setFont(Font.font("Arial",15));
-
         Label seatsLeft = new Label("#seatsLeft");
         seatsLeft.setText(String.valueOf(event.getCapacityNum()));
         seatsLeft.setLayoutX(500);
         seatsLeft.setLayoutY(134);
         seatsLeft.setFont(Font.font("Arial",15));
+
+        //Button
+
+        Button bookButton = new Button("book");
+        bookButton.setLayoutX(530);
+        bookButton.setLayoutY(130);
+        bookButton.setFont(Font.font("Arial",15));
+
 
         clonedGroup.getChildren().addAll(rectangle,eventTitle,byUser,category,description,dateAndTime,location,bookButton,seatsLeft);
         return clonedGroup;

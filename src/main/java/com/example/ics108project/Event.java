@@ -170,7 +170,16 @@ public class Event {
         this.capacityNum = capacityNum;
     }
     public static void loadEvents() throws ParseException {
-        addEvent("event1","workshop","java learning workshop",new SimpleDateFormat("dd/MM/yyyy").parse("02/04/2024"),"11PM","building 22", 150,new User("Ahmed","test",true));
+        addEvent("event1","workshop","java learning workshopjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",new SimpleDateFormat("dd/MM/yyyy").parse("02/04/2024"),"11PM","building 22", 150,new User("Ahmed","test",true));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
+        addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
         addEvent("event2","workshopJavas","java learning workshop",new Date(),"12PM","building 22", 150,new User("Yousef","123",false));
     }
 }

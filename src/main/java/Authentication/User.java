@@ -86,5 +86,6 @@ public class User {
     public static void loadUsers(){
         createUser("Yousef", "123", false);
         createUser("Khalid", "123", true);
+        createUser("Ahmed", "123", true);
     }
 }
