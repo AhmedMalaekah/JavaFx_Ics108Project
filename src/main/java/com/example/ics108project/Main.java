@@ -22,6 +22,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import Authentication.User;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 
 public class Main extends Application {
@@ -34,11 +37,25 @@ public class Main extends Application {
     public static User currentUser;
     @Override
     public void start(Stage applicationStage) throws ParseException {
+
         applicationStage.setTitle("Kfupm Event");
         Event.loadEvents();
         User.loadUsers();
         loginPage(applicationStage);
 
+    }
+    @Override
+    public void stop() {
+        try (final FileOutputStream fout = new FileOutputStream("Users.txt");
+             final ObjectOutputStream out = new ObjectOutputStream(fout)) {
+            for (int i = 0; i < User.getUsers().size(); i++) {
+                out.writeObject(User.getUsers().get(i));
+                out.flush();
+            }
+            System.out.println("success");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //Pages

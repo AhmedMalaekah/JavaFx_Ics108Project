@@ -1,5 +1,6 @@
 package com.example.ics108project;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.text.*;
 
 import Authentication.User;
 import javafx.scene.control.Button;
-public class Event {
+public class Event implements Serializable {
     private String title;
     private String category;
     private String description;

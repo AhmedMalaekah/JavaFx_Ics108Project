@@ -1,13 +1,17 @@
 package Authentication;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class User {
+import static java.lang.System.out;
+
+public class User implements Serializable {
     private String username;
     private String passwaord;
 
     private boolean admin;
-    private static final ArrayList<User> users = new ArrayList<>();
+    private static  ArrayList<User> users = new ArrayList<>();
 
     private static final ArrayList<String> usernames = new ArrayList<>();
     public User(String username, String passwaord, boolean admin) {
@@ -23,6 +27,10 @@ public class User {
         User.users.add(newUser);
         usernames.add(newUser.getUsername());
 
+    }
+
+    public String getPasswaord() {
+        return passwaord;
     }
 
     public User() {
@@ -83,9 +91,32 @@ public class User {
         return username;
 }
 
-    public static void loadUsers(){
-        createUser("Yousef", "123", false);
-        createUser("Khalid", "123", true);
-        createUser("Ahmed", "123", true);
-    }
-}
+    public static void loadUsers() {
+        try {
+            FileInputStream fileStream  = new FileInputStream(new File("Users.txt"));
+            ObjectInputStream os  = new ObjectInputStream(fileStream);
+            Object userObject = null;
+            while((userObject = os.readObject()) != null) {
+                User castObject = (User) userObject;
+                users.add(castObject);
+                usernames.add(castObject.username);
+            }
+            os.close();
+        }  catch(Exception ex) {
+            if(ex instanceof EOFException) {
+                out.println("End of file reached!");
+                out.println("Total profiles found is: " + users.size());
+            } else if(ex instanceof FileNotFoundException) {
+                out.println("File not found! \n This is your default users");
+                createUser("Yousef", "123", false);
+                createUser("Khalid", "123", true);
+                createUser("Ahmed", "123", true);
+            }
+        }
+        }
+//            createUser("Yousef", "123", false);
+//            createUser("Khalid", "123", true);
+//            createUser("Ahmed", "123", true);
+        }
+
+
