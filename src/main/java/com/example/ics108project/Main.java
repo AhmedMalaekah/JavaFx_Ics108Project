@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
+import java.time.LocalDate;
 
 public class Main extends Application {
 
@@ -35,6 +36,7 @@ public class Main extends Application {
     public static final Font HEADING_FONT = Font.font("Comic Sans MS", HEADING_SIZE);
     public static final Insets PADDING  = new Insets(10, 8, 10, 8);
     public static User currentUser;
+    public static boolean inEvent = false;
     @Override
     public void start(Stage applicationStage) throws ParseException {
 
@@ -52,11 +54,26 @@ public class Main extends Application {
                 out.writeObject(User.getUsers().get(i));
                 out.flush();
             }
-            System.out.println("success");
+            System.out.println("Users has been saved");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        try (final FileOutputStream fout = new FileOutputStream("Events.txt");
+             final ObjectOutputStream out = new ObjectOutputStream(fout)) {
+            for (int i = 0; i < Event.getEvents().size(); i++) {
+                out.writeObject(Event.getEvents().get(i));
+                out.flush();
+            }
+            System.out.println("Events has been saved");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
+
 
     //Pages
     public static void loginPage(Stage applicationStage){
@@ -386,6 +403,53 @@ public class Main extends Application {
         applicationStage.show();
     }
 
+    public static void myTicketPage(Stage applicationStage){
+        inEvent = false;
+        // containers
+        BorderPane generalContainer = new BorderPane();
+        ScrollPane centerContainer = new ScrollPane();
+        centerContainer.setMaxHeight(700);
+        centerContainer.setMaxWidth(615);
+
+
+        // Settings for ticket page
+        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
+        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
+
+        //root
+        generalContainer.setPadding(PADDING);
+        generalContainer.setTop(navbar(applicationStage));
+        generalContainer.setCenter(centerContainer);
+
+
+        VBox vBox = new VBox(5);
+        vBox.setMinWidth(600);
+        vBox.setMinHeight(520);
+        centerContainer.setContent(vBox);
+
+
+        for (int i = 0; i < Event.getEvents().size(); i++) {
+            for (int j = 0; j < Event.getEvents().get(i).getCapacity().size(); j++) {
+                if (Event.getEvents().get(i).getCapacity().get(j).getUser().equals(currentUser)){
+                    Group group = eventBox(Event.getEvents().get(i));
+                    vBox.getChildren().add(group);
+
+        }
+        }
+
+        }
+
+
+
+
+        // scene and stage
+        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
+        applicationStage.setScene(scene);
+        applicationStage.show();
+
+    }
+
     //Components
     public static BorderPane navbar(Stage applicationStage){
         final double fontSizeLogo = WIN_WIDTH * 0.04;
@@ -438,7 +502,7 @@ public class Main extends Application {
             bt2.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    eventsPage(applicationStage);
+                    myTicketPage(applicationStage);
                 }
             });
             leftNavContainer.getChildren().add(bt2);
@@ -462,6 +526,7 @@ public class Main extends Application {
         return container;
     }
     public static ScrollPane basicEvent(Stage applicationStage){
+        inEvent = true;
         // containers
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setMaxHeight(700);
@@ -536,15 +601,42 @@ public class Main extends Application {
         seatsLeft.setLayoutY(134);
         seatsLeft.setFont(Font.font("Arial",15));
 
+        clonedGroup.getChildren().addAll(rectangle,eventTitle,byUser,category,description,dateAndTime,location,seatsLeft);
+
         //Button
+        if (inEvent){
+            Button bookButton = new Button("book");
+            bookButton.setLayoutX(530);
+            bookButton.setLayoutY(130);
+            bookButton.setFont(Font.font("Arial",15));
+            clonedGroup.getChildren().add(bookButton);
 
-        Button bookButton = new Button("book");
-        bookButton.setLayoutX(530);
-        bookButton.setLayoutY(130);
-        bookButton.setFont(Font.font("Arial",15));
+            bookButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    if(event.isUpcoming() || event.getDate().equals(LocalDate.now())){
+                        if (event.getCapacity().size() < event.getCapacityNum()){
+                            event.addTicket(currentUser);
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setHeaderText("Event has booked");
+                            alert.showAndWait();
 
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("The tickets are sold");
+                            alert.showAndWait();
+                    }
 
-        clonedGroup.getChildren().addAll(rectangle,eventTitle,byUser,category,description,dateAndTime,location,bookButton,seatsLeft);
+                    }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("you can't book past events");
+                        alert.showAndWait();
+                    }
+                }
+            });
+
+        }
         return clonedGroup;
 
     }

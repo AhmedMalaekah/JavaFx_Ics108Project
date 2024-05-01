@@ -28,10 +28,7 @@ public class User implements Serializable {
         usernames.add(newUser.getUsername());
 
     }
-
-    public String getPasswaord() {
-        return passwaord;
-    }
+    
 
     public User() {
         this.username = "none";
@@ -104,19 +101,16 @@ public class User implements Serializable {
             os.close();
         }  catch(Exception ex) {
             if(ex instanceof EOFException) {
-                out.println("End of file reached!");
-                out.println("Total profiles found is: " + users.size());
+                out.println("End of Users file reached!");
+                out.println("Total Users found is: " + users.size());
             } else if(ex instanceof FileNotFoundException) {
-                out.println("File not found! \n This is your default users");
+                out.println("Users File not found! \n This is your default users");
                 createUser("Yousef", "123", false);
                 createUser("Khalid", "123", true);
                 createUser("Ahmed", "123", true);
             }
         }
         }
-//            createUser("Yousef", "123", false);
-//            createUser("Khalid", "123", true);
-//            createUser("Ahmed", "123", true);
         }
 
 
