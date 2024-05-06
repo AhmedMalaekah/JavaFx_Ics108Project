@@ -538,7 +538,7 @@ public class Main extends Application {
         scrollPane.setContent(vBox);
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = myEventBox(Event.getEvents().get(i), false, true);
+            BorderPane box = myEventBox(Event.getEvents().get(i), true, false);
             vBox.getChildren().add(box);
         }
 
