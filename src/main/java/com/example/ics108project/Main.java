@@ -20,7 +20,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import Authentication.User;
+import com.example.ics108project.User;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,13 +36,13 @@ public class Main extends Application {
     public static final Font HEADING_FONT = Font.font("Comic Sans MS", HEADING_SIZE);
     public static final Insets PADDING  = new Insets(10, 8, 10, 8);
     public static User currentUser;
-    public static boolean inEvent = false;
+
     @Override
     public void start(Stage applicationStage) throws ParseException {
 
         applicationStage.setTitle("Kfupm Event");
-        Event.loadEvents();
         User.loadUsers();
+        Event.loadEvents();
         loginPage(applicationStage);
 
     }
@@ -73,7 +73,6 @@ public class Main extends Application {
 
 
     }
-
 
     //Pages
     public static void loginPage(Stage applicationStage){
@@ -164,23 +163,23 @@ public class Main extends Application {
                     userFound = true;
 
                 }
-                else {index =0;}
                 try {
-                    User user = User.getUsers().get(index);
-                    currentUser = user;
-                    {
-                        if (user.getUsername().equals(usernameField.getText())&& user.checkPassword(passwordField.getText())&& userFound && !user.isAdmin()){
+                    if(userFound) {
+                        User user = User.getUsers().get(index);
+                        if (user.checkPassword(passwordField.getText())) {
+                            currentUser = user;
                             homePage(applicationStage);
-                        } else if (user.getUsername().equals(usernameField.getText())&& user.checkPassword(passwordField.getText())&& user.isAdmin()&& userFound) {
-
-                            homePage(applicationStage);
-
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setHeaderText("Wrong credentials");
                             alert.setContentText("You should enter correct credentials");
                             alert.showAndWait();
                         }
+                    }else{
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Wrong credentials");
+                        alert.setContentText("You should enter correct credentials");
+                        alert.showAndWait();
                     }
                 }
                 catch (Exception e){
@@ -404,17 +403,17 @@ public class Main extends Application {
     }
 
     public static void myTicketPage(Stage applicationStage){
-        inEvent = false;
         // containers
         BorderPane generalContainer = new BorderPane();
         ScrollPane centerContainer = new ScrollPane();
-        centerContainer.setMaxHeight(700);
-        centerContainer.setMaxWidth(615);
-
+        centerContainer.setMaxHeight(WIN_HEIGHT * 0.8 );
+        centerContainer.setMaxWidth(WIN_WIDTH * 0.85);
+        centerContainer.setPadding(new Insets(10, 10, 10, 10));
 
         // Settings for ticket page
         BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
         BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
 
 
         //root
@@ -424,16 +423,16 @@ public class Main extends Application {
 
 
         VBox vBox = new VBox(5);
-        vBox.setMinWidth(600);
-        vBox.setMinHeight(520);
+        vBox.setMinWidth(WIN_WIDTH * 0.8);
+        vBox.setMinHeight(WIN_HEIGHT * 0.8 - 20);
         centerContainer.setContent(vBox);
 
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            for (int j = 0; j < Event.getEvents().get(i).getCapacity().size(); j++) {
-                if (Event.getEvents().get(i).getCapacity().get(j).getUser().equals(currentUser)){
-                    Group group = eventBox(Event.getEvents().get(i));
-                    vBox.getChildren().add(group);
+            for (int j = 0; j < Event.getEvents().get(i).getTickets().size(); j++) {
+                if (Event.getEvents().get(i).getTickets().get(j).getUser().equals(currentUser)){
+                    BorderPane tickets = myEventBox(Event.getEvents().get(i), false, false);
+                    vBox.getChildren().add(tickets);
 
         }
         }
@@ -526,27 +525,27 @@ public class Main extends Application {
         return container;
     }
     public static ScrollPane basicEvent(Stage applicationStage){
-        inEvent = true;
         // containers
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setMaxHeight(700);
-        scrollPane.setMaxWidth(615);
+        scrollPane.setMaxHeight(WIN_HEIGHT * 0.8 );
+        scrollPane.setMaxWidth(WIN_WIDTH * 0.85);
+        scrollPane.setPadding(new Insets(10, 10, 10, 10));
 
 
         VBox vBox = new VBox(5);
-        vBox.setMinWidth(600);
-        vBox.setMinHeight(520);
+        vBox.setMinWidth(WIN_WIDTH * 0.8);
+        vBox.setMinHeight(WIN_HEIGHT * 0.8 - 20);
         scrollPane.setContent(vBox);
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            Group group = eventBox(Event.getEvents().get(i));
-            vBox.getChildren().add(group);
+            BorderPane box = myEventBox(Event.getEvents().get(i), false, true);
+            vBox.getChildren().add(box);
         }
 
         return scrollPane;
 
     }
-    public static Group eventBox(Event event){
+    public static Group eventBox(Event event, boolean inEvent){
         Group clonedGroup = new Group();
         Rectangle rectangle = new Rectangle();
         rectangle.setHeight(175);
@@ -596,7 +595,7 @@ public class Main extends Application {
         location.setFont(Font.font("Arial",15));
 
         Label seatsLeft = new Label("#seatsLeft");
-        seatsLeft.setText(String.valueOf(event.getCapacityNum()));
+        seatsLeft.setText(String.valueOf(event.getNumTicketsAvailable()));
         seatsLeft.setLayoutX(500);
         seatsLeft.setLayoutY(134);
         seatsLeft.setFont(Font.font("Arial",15));
@@ -615,15 +614,15 @@ public class Main extends Application {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     if(event.isUpcoming() || event.getDate().equals(LocalDate.now())){
-                        if (event.getCapacity().size() < event.getCapacityNum()){
+                        if (event.getTickets().size() < event.getCapacityNum()){
                             event.addTicket(currentUser);
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setHeaderText("Event has booked");
+                            alert.setHeaderText("Event booked successfully!");
                             alert.showAndWait();
 
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setHeaderText("The tickets are sold");
+                            alert.setHeaderText("Not enough seats!");
                             alert.showAndWait();
                     }
 
@@ -639,6 +638,123 @@ public class Main extends Application {
         }
         return clonedGroup;
 
+    }
+    public static BorderPane myEventBox(Event event, boolean inEvent, boolean adminPanel){
+        // general container
+        BorderPane generalContainer = new BorderPane();
+        generalContainer.setPadding(new Insets(10, 10, 10, 10));
+        generalContainer.setMaxWidth(WIN_WIDTH * 0.8 );
+        generalContainer.setMinHeight(WIN_HEIGHT * 0.25);
+        generalContainer.setBackground(new Background(new BackgroundFill(Color.rgb(220, 220, 220), CornerRadii.EMPTY, Insets.EMPTY)));
+
+        // leftContainer containers
+        VBox leftContainer = new VBox();
+        leftContainer.setAlignment(Pos.TOP_LEFT);
+
+        HBox titleContainer = new HBox();
+        titleContainer.setAlignment(Pos.BOTTOM_LEFT);
+        titleContainer.setSpacing(10);
+
+
+        leftContainer.getChildren().add(titleContainer);
+
+
+        // Title and by User
+        Label titleLabel = new Label(event.getTitle());
+        titleLabel.setFont(Font.font("Comic Sans MS", 0.04*WIN_WIDTH));
+        titleContainer.getChildren().add(titleLabel);
+
+        Label byUserLabel = new Label("by " + event.getUser().getUsername());
+        byUserLabel.setFont(Font.font("Comic Sans MS", 0.02*WIN_WIDTH));
+        titleContainer.getChildren().add(byUserLabel);
+
+        // category
+        Label categoryLabel = new Label(event.getCategory());
+        categoryLabel.setFont(Font.font("Comic Sans MS", 0.02*WIN_WIDTH));
+        leftContainer.getChildren().add(categoryLabel);
+
+        // description
+        Label descriptionLabel = new Label(event.getDescription());
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setMaxWidth(0.6 * WIN_WIDTH);
+        descriptionLabel.setFont(Font.font("Comic Sans MS", 0.02*WIN_WIDTH));
+        leftContainer.getChildren().add(descriptionLabel);
+
+        // header 2 containers
+        BorderPane rightContainer = new BorderPane();
+        VBox dateTimeLocationContainer = new VBox();
+
+        rightContainer.setTop(dateTimeLocationContainer);
+
+        // Date and time and location
+        Label dateTimeLabel = new Label(event.getDateString() + " - " + event.getTime());
+        dateTimeLocationContainer.getChildren().add(dateTimeLabel);
+
+        Label locationLabel = new Label(event.getLocation());
+        locationLabel.setFont(Font.font("Comic Sans MS", 0.02*WIN_WIDTH));
+        dateTimeLocationContainer.getChildren().add(locationLabel);
+
+        if(inEvent) {
+            HBox seatsBtnContainer = new HBox();
+            seatsBtnContainer.setAlignment(Pos.CENTER_RIGHT);
+            seatsBtnContainer.setSpacing(10);
+            rightContainer.setBottom(seatsBtnContainer);
+
+            //Number of seats and book btn
+            Label numOfSeatsLabel = new Label(event.getNumTicketsAvailable() + " / " + event.getCapacityNum());
+            numOfSeatsLabel.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+            seatsBtnContainer.getChildren().add(numOfSeatsLabel);
+
+            Button bookBtn = new Button("Book");
+            bookBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+            seatsBtnContainer.getChildren().add(bookBtn);
+
+            bookBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    if(event.isUpcoming()){
+                        if (event.getNumTicketsAvailable() > 0){
+                            event.addTicket(currentUser);
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setHeaderText("Event booked successfully!");
+                            alert.showAndWait();
+
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setHeaderText("Not enough seats!");
+                            alert.showAndWait();
+                        }
+
+                    }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("you can't book past events");
+                        alert.showAndWait();
+                    }
+                }
+            });
+        }
+        if(adminPanel){
+            HBox buttonsContainer = new HBox();
+            buttonsContainer.setAlignment(Pos.CENTER_RIGHT);
+            buttonsContainer.setSpacing(10);
+            rightContainer.setBottom(buttonsContainer);
+
+            // edit btn
+            Button editBtn = new Button("Edit");
+            editBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+            buttonsContainer.getChildren().add(editBtn);
+
+            //delete btn
+            Button deleteBtn = new Button("Delete");
+            deleteBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+            buttonsContainer.getChildren().add(deleteBtn);
+
+        }
+
+        generalContainer.setLeft(leftContainer);
+        generalContainer.setRight(rightContainer);
+        return generalContainer;
     }
 
 }

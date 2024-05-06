@@ -1,39 +1,24 @@
 package com.example.ics108project;
-import Authentication.User;
+import com.example.ics108project.User;
 import java.io.*;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+
 import static java.lang.System.out;
 public class Event implements Serializable {
     private String title;
     private String category;
     private String description;
     private LocalDate date;
-
     private String time;
     private String location;
-    private ArrayList<Ticket> capacity;
+    private ArrayList<Ticket> tickets;
     private int capacityNum;
 //    private Button button;
     private User user;
 
     private static  ArrayList<Event> events = new ArrayList<>();
-
-
-    public Event() {
-        this.title = "noTitle";
-        this.category = "noCategory";
-        this.description = "noDescription";
-        this.time = "noTime";
-        this.location =" noLocation";
-        this.capacity = null;
-//        this.button = new Button("book");
-    }
-
 
     public Event(String title, String category, String description, LocalDate date, String time, String location, int capacityNum,User user) {
         this.title = title;
@@ -43,38 +28,37 @@ public class Event implements Serializable {
         this.time = time;
         this.location = location;
         this.capacityNum = capacityNum;
-//        this.capacity = new Ticket[capacityNum];
-//        this.button = new Button("book");
+        this.tickets = new ArrayList<Ticket>(capacityNum);
         this.user = user;
     }
 
-
-    public Event(String title, String category, String description, LocalDate date, String time, String location, int capacityNum) {
+    public void editEvent(String title, String category, String description, LocalDate date, String time, String location, int capacityNum,User user){
         this.title = title;
         this.category = category;
         this.description = description;
-        this.date = date;
+        this.setDate(date);
         this.time = time;
         this.location = location;
-        this.capacityNum = capacityNum;
-        this.capacity = new ArrayList<Ticket>(capacityNum);
-
+        this.setCapacityNum(capacityNum);
+        this.user = user;
     }
 
-    public static void createEvent(String title, String category, String description, LocalDate date, String time, String location, int capacityNum){
-        Event newevent = new Event(title, category, description, date, time, location, capacityNum);
+    public static void createEvent(String title, String category, String description, LocalDate date, String time, String location, int capacityNum, User user){
+        Event newevent = new Event(title, category, description, date, time, location, capacityNum, user);
         Event.getEvents().add(newevent);
     }
-    // may we make several methods and each one of them edit specific thing
-
-
     public void addTicket(User user){
-
-        this.capacity.add(new Ticket(user));
-
+        if(this.getNumTicketsAvailable() > 0) {
+            this.tickets.add(new Ticket(user, this.tickets.size() + 1));
+        }
     }
-    public  static void addEvent(Event event){
-        events.add(event);
+    public boolean bookedByUser(User user){
+        for (Ticket ticket : tickets) {
+            if (ticket.getUser().equals(user)) {
+                return true;
+            }
+        }
+        return false;
     }
     public static ArrayList<Event> getEvents() {
         return events;
@@ -83,9 +67,8 @@ public class Event implements Serializable {
         events.remove(event);
     }
 
-
-    public  boolean isUpcoming(){
-        if (date.isAfter(LocalDate.now())){
+    public boolean isUpcoming(){
+        if (date.isAfter(LocalDate.now()) || date.equals(LocalDate.now())){
             return true;
         }
         else return false;
@@ -96,87 +79,48 @@ public class Event implements Serializable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-//    public Button getButton() {
-//        return button;
-//    }
-
-//    public void setButton(Button button) {
-//        this.button = button;
-//    }
-
     public String getDateString() {
         return date.toString();
     }
-
-    public String getCategory() {
-        return category;
+    public void setDate(LocalDate date){
+        if(date.isAfter(LocalDate.now())){
+            this.date = date;
+        }
     }
+    public String getCategory() {return category;}
+    public String getDescription() {return description;}
+    public LocalDate getDate() {return date;}
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
 
     public int getCapacityNum() {
         return capacityNum;
     }
-
-    public void setCapacityNum(int capacityNum) {
-        this.capacityNum = capacityNum;
+    public void setCapacityNum(int capacityNum){
+        if(capacityNum >= this.capacityNum){
+            this.capacityNum = capacityNum;
+        }
     }
 
-
+    public int getNumTicketsAvailable(){
+        return capacityNum - tickets.size();
+    }
     public String getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
 
     public User getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public ArrayList<Ticket> getTickets() {
+        return this.tickets;
     }
 
-    public ArrayList<Ticket> getCapacity() {
-        return this.capacity;
-    }
-
-
-    public void setCapacity(int capacityNum) {
-        this.capacityNum = capacityNum;
-    }
     public static void loadEvents() throws ParseException {
         // when you add the peanel for adding event you can deldte these addevents
         try {
@@ -194,10 +138,11 @@ public class Event implements Serializable {
                 out.println("Total Events found is: " + Event.getEvents().size());
             } else if(ex instanceof FileNotFoundException) {
                 out.println("Events File not found! \n This is your default Events");
-                createEvent("event1","workshopJavas","java learning workshop", LocalDate.now(),"12PM","building 22", 1);
-                createEvent("event2","workshopJavas","java learning workshop",LocalDate.now(),"12PM","building 22", 1);
-                createEvent("event3","workshopJavas","java learning workshop",LocalDate.of(2024,5,2),"12PM","building 22", 1);
-                createEvent("event4","workshopJavas","java learning workshop",LocalDate.of(2024,4,5),"12PM","building 22", 1);
+                User user1 = User.getUsers().getFirst();
+                createEvent("GitHub","workshop","GitHub learning workshop for continues integration", LocalDate.now(),"8:00PM","building 22", 1, user1);
+                createEvent("Toastmaster","workshopJavas","Learn how to express yourself with the world champions",LocalDate.now(),"7:00PM","building 54", 1, user1);
+                createEvent("Competitive Programming","competition","Compete in programming against experts",LocalDate.of(2024,5,2),"6:00PM","building 22", 1, user1);
+                createEvent("Graduation Party","party","Have fun with family and friends",LocalDate.of(2024,4,5),"5:00PM","KFUPM Stadium", 1, user1);
             }
         }
 

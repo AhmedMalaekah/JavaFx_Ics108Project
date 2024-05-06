@@ -1,4 +1,4 @@
-package Authentication;
+package com.example.ics108project;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
-public class User implements Serializable {
+public class User implements Serializable{
     private String username;
     private String passwaord;
 
@@ -28,7 +28,7 @@ public class User implements Serializable {
         usernames.add(newUser.getUsername());
 
     }
-    
+
 
     public User() {
         this.username = "none";
@@ -49,7 +49,7 @@ public class User implements Serializable {
         else return true;
     }
 
-        public static boolean validUsername(String username) {
+    public static boolean validUsername(String username) {
         if (usernames.contains(username)) {
             return false;
         }
@@ -86,8 +86,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return username;
-}
-
+    }
     public static void loadUsers() {
         try {
             FileInputStream fileStream  = new FileInputStream(new File("Users.txt"));
@@ -110,7 +109,6 @@ public class User implements Serializable {
                 createUser("Ahmed", "123", true);
             }
         }
-        }
-        }
+    }
 
-
+}

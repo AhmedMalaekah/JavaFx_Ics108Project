@@ -1,6 +1,6 @@
 package com.example.ics108project;
 
-import Authentication.User;
+import com.example.ics108project.User;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
