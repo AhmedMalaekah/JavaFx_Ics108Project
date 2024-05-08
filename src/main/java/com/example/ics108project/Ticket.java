@@ -8,15 +8,15 @@ import java.io.Serializable;
 public class Ticket implements Serializable {
 
 
-    private User user;
+    private String username;
     private int seatNum;
     Ticket(User user, int seatNum){
-        this.user = user;
+        this.username = username;
         this.seatNum = seatNum;
     }
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 }
 
