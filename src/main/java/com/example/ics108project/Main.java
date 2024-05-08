@@ -466,7 +466,7 @@ public class Main extends Application {
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
             for (int j = 0; j < Event.getEvents().get(i).getTickets().size(); j++) {
-                if (Event.getEvents().get(i).getTickets().get(j).getUser().equals(currentUser)){
+                if (Event.getEvents().get(i).getTickets().get(j).getUser().getUsername().equals(currentUser.getUsername())){
                     BorderPane tickets = eventBox(Event.getEvents().get(i), false, false, applicationStage);
                     vBox.getChildren().add(tickets);
 
