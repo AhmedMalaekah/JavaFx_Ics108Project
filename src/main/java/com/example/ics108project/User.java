@@ -100,13 +100,9 @@ public class User implements Serializable{
             os.close();
         }  catch(Exception ex) {
             if(ex instanceof EOFException) {
-                out.println("End of Users file reached!");
-                out.println("Total Users found is: " + users.size());
+                out.println("Running Program");
             } else if(ex instanceof FileNotFoundException) {
-                out.println("Users File not found! \n This is your default users");
-                createUser("Yousef", "123", false);
-                createUser("Khalid", "123", true);
-                createUser("Ahmed", "123", true);
+                out.println("Users File not found!");
             }
         }
     }

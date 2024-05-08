@@ -1,5 +1,4 @@
 package com.example.ics108project;
-import com.example.ics108project.User;
 import java.io.*;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -20,12 +19,12 @@ public class Event implements Serializable {
     private static  ArrayList<Event> events = new ArrayList<>();
 
     public Event(String title, String category, String description, LocalDate date, String time, String location, int capacityNum,User user) {
-        this.title = title;
-        this.category = category;
-        this.description = description;
-        this.date = date;
-        this.time = time;
-        this.location = location;
+        this.setTitle(title);
+        this.setCategory(category);
+        this.setDescription(description);
+        this.setDate(date);
+        this.setTime(time);
+        this.setLocation(location);
         this.setCapacityNum(capacityNum);
         this.tickets = new ArrayList<Ticket>(capacityNum);
         this.user = user;
@@ -37,7 +36,7 @@ public class Event implements Serializable {
         this.setDescription(description);
         this.setDate(date);
         this.setTime(time);
-        this.setlocation(location);
+        this.setLocation(location);
         this.setUser(user);
     }
 
@@ -80,6 +79,9 @@ public class Event implements Serializable {
         if(!title.isEmpty()){
             this.title = title;
         }
+        else{
+            this.title = "no title";
+        }
     }
 
     public String getDateString() {
@@ -91,17 +93,26 @@ public class Event implements Serializable {
         if(!category.isEmpty()){
             this.category = category;
         }
+        else{
+            this.category = "";
+        }
     }
     public String getDescription() {return description;}
     public void setDescription(String description){
         if(!description.isEmpty()){
             this.description = description;
         }
+        else{
+            this.description = "empty description";
+        }
     }
     public LocalDate getDate() {return date;}
     public void setDate(LocalDate date){
         if(date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())){
             this.date = date;
+        }
+        else{
+            this.date = LocalDate.now();
         }
     }
 
@@ -112,6 +123,9 @@ public class Event implements Serializable {
     public void setCapacityNum(int capacityNum){
         if(capacityNum > 0){
             this.capacityNum = capacityNum;
+        }
+        else{
+            this.capacityNum = 1;
         }
     }
 
@@ -124,6 +138,9 @@ public class Event implements Serializable {
     public void setTime(String time){
         if(!time.isEmpty()){
             this.time = time;
+        }
+        else{
+            this.time = "TBA";
         }
     }
 
@@ -138,9 +155,12 @@ public class Event implements Serializable {
     public String getLocation() {
         return location;
     }
-    public void setlocation(String location){
+    public void setLocation(String location){
         if(!location.isEmpty()){
             this.location = location;
+        }
+        else{
+            this.location = "TBA";
         }
     }
 
@@ -161,8 +181,7 @@ public class Event implements Serializable {
             os.close();
         }  catch(Exception ex) {
             if(ex instanceof EOFException) {
-                out.println("End of events file reached!");
-                out.println("Total Events found is: " + Event.getEvents().size());
+                out.print("");
             } else if(ex instanceof FileNotFoundException) {
                 out.println("Events File not found! \n This is your default Events");
                 User user1 = User.getUsers().getFirst();

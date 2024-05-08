@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
+import java.time.LocalDate;
 
 public class Main extends Application {
 
@@ -46,7 +47,6 @@ public class Main extends Application {
                 out.writeObject(User.getUsers().get(i));
                 out.flush();
             }
-            System.out.println("Users has been saved");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,6 @@ public class Main extends Application {
                 out.writeObject(Event.getEvents().get(i));
                 out.flush();
             }
-            System.out.println("Events has been saved");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -366,7 +365,7 @@ public class Main extends Application {
         BorderPane generalContainer = new BorderPane();
         ScrollPane centerContainer = new ScrollPane();
         centerContainer.setMaxHeight(WIN_HEIGHT * 0.9);
-        centerContainer.setMaxWidth(WIN_WIDTH * 0.85);
+        centerContainer.setMaxWidth(WIN_WIDTH * 0.80 + 20);
         centerContainer.setPadding(new Insets(10, 10, 10, 10));
 
         // center container alignment
@@ -443,7 +442,7 @@ public class Main extends Application {
         BorderPane generalContainer = new BorderPane();
         ScrollPane centerContainer = new ScrollPane();
         centerContainer.setMaxHeight(WIN_HEIGHT * 0.8 );
-        centerContainer.setMaxWidth(WIN_WIDTH * 0.85);
+        centerContainer.setMaxWidth(WIN_WIDTH * 0.80 + 20);
         centerContainer.setPadding(new Insets(10, 10, 10, 10));
 
         // Settings for ticket page
@@ -588,6 +587,7 @@ public class Main extends Application {
 
         // category
         Label categoryLabel = new Label(event.getCategory());
+        categoryLabel.setUnderline(true);
         categoryLabel.setFont(Font.font("Comic Sans MS", 0.02*WIN_WIDTH));
         leftContainer.getChildren().add(categoryLabel);
 
@@ -694,7 +694,7 @@ public class Main extends Application {
         // containers
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setMaxHeight(WIN_HEIGHT * 0.8 );
-        scrollPane.setMaxWidth(WIN_WIDTH * 0.85);
+        scrollPane.setMaxWidth(WIN_WIDTH * 0.80 + 20);
         scrollPane.setPadding(new Insets(10, 10, 10, 10));
 
 
@@ -803,6 +803,7 @@ public class Main extends Application {
 
         // date field
         DatePicker dateField = new DatePicker();
+        dateField.setValue(LocalDate.now());
         dateTimeContainer.getChildren().add(dateField);
 
         //time label
@@ -859,6 +860,7 @@ public class Main extends Application {
 
             //capacity field
             TextField capacityField = new TextField();
+            capacityField.setText("1");
             capacityField.setMinWidth(WIN_WIDTH*0.3);
             capacityField.setMinHeight(WIN_HEIGHT*0.05);
             capacityContainer.getChildren().add(capacityField);
@@ -869,8 +871,16 @@ public class Main extends Application {
             saveBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    Event.createEvent(titleField.getText(), categoryField.getText(),descriptionField.getText(), dateField.getValue(), timeField.getText(), locationField.getText(),Integer.parseInt(capacityField.getText()), currentUser);
-                    adminPage(applicationStage);
+                    try {
+                        Event.createEvent(titleField.getText(), categoryField.getText(), descriptionField.getText(), dateField.getValue(), timeField.getText(), locationField.getText(), Integer.parseInt(capacityField.getText()), currentUser);
+                        adminPage(applicationStage);
+                    }
+                    catch (Exception ex){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Wrong input!");
+                        alert.setContentText("You should enter correct input format");
+                        alert.showAndWait();
+                    }
                 }
             });
 
@@ -887,8 +897,16 @@ public class Main extends Application {
             saveBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    event.editEvent(titleField.getText(), categoryField.getText(), descriptionField.getText(), dateField.getValue(), timeField.getText(), locationField.getText(), currentUser);
-                    adminPage(applicationStage);
+                    try {
+                        event.editEvent(titleField.getText(), categoryField.getText(), descriptionField.getText(), dateField.getValue(), timeField.getText(), locationField.getText(), currentUser);
+                        adminPage(applicationStage);
+                    }
+                    catch (Exception ex){
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Wrong input!");
+                        alert.setContentText("You should enter correct input format");
+                        alert.showAndWait();
+                    }
                 }
             });
         }
