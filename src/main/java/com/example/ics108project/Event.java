@@ -47,12 +47,12 @@ public class Event implements Serializable {
     }
     public void addTicket(User user){
         if(this.getNumTicketsAvailable() > 0) {
-            this.tickets.add(new Ticket(user, this.tickets.size() + 1));
+            this.tickets.add(new Ticket(user.getUsername(), this.tickets.size() + 1));
         }
     }
     public boolean bookedByUser(User user){
         for (Ticket ticket : tickets) {
-            if (ticket.getUser().equals(user)) {
+            if (ticket.getUsername().equals(user.getUsername())) {
                 return true;
             }
         }

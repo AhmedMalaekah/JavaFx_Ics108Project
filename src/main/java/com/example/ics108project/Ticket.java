@@ -10,7 +10,7 @@ public class Ticket implements Serializable {
 
     private String username;
     private int seatNum;
-    Ticket(User user, int seatNum){
+    Ticket(String username, int seatNum){
         this.username = username;
         this.seatNum = seatNum;
     }
