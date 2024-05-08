@@ -1,32 +1,24 @@
 package com.example.ics108project;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import com.example.ics108project.User;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
-import java.time.LocalDate;
 
 public class Main extends Application {
 
@@ -353,7 +345,7 @@ public class Main extends Application {
     public static void homePage(Stage applicationStage){
         BorderPane generalContainer = new BorderPane();
         // Settings for events page
-        ScrollPane centerContainer = basicEvent(applicationStage);
+        ScrollPane centerContainer = eventPage(applicationStage);
 
         BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
         BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
@@ -369,39 +361,27 @@ public class Main extends Application {
         applicationStage.setScene(scene);
         applicationStage.show();
     }
-    public static void eventsPage(Stage applicationStage) {
-        Group root = new Group();
-        Scene scene = new Scene(root);
-        TableView tableView = new TableView<>();
-        ObservableList<Event> contentList = FXCollections.observableArrayList(Event.getEvents());
-
-        TableColumn<Event, String> titleColumn = new TableColumn("Title");
-        TableColumn<Event, String> categoryColumn = new TableColumn("Category");
-        TableColumn<Event, String> descriptionColumn = new TableColumn("Description");
-        TableColumn<Event, String> dateColumn = new TableColumn("Date");
-        TableColumn<Event, String> timeColumn = new TableColumn("Time");
-        TableColumn<Event, String> locationColumn = new TableColumn("Location");
-        TableColumn<Event, Integer> capacityColumn = new TableColumn("Capacity");
-        TableColumn bookingColumn = new TableColumn("Booking");
+    public static ScrollPane eventPage(Stage applicationStage){
+        // containers
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setMaxHeight(WIN_HEIGHT * 0.8 );
+        scrollPane.setMaxWidth(WIN_WIDTH * 0.85);
+        scrollPane.setPadding(new Insets(10, 10, 10, 10));
 
 
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
-        capacityColumn.setCellValueFactory(new PropertyValueFactory<>("capacityNum"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateString"));
-        bookingColumn.setCellValueFactory(new PropertyValueFactory("button"));
-        tableView.getColumns().addAll(titleColumn, categoryColumn, descriptionColumn, dateColumn, timeColumn, locationColumn, capacityColumn, bookingColumn);
-        tableView.setItems(contentList);
-        tableView.setPrefWidth(WIN_WIDTH);
-        tableView.setPrefHeight(WIN_HEIGHT);
-        root.getChildren().add(tableView);
-        applicationStage.setScene(scene);
-        applicationStage.show();
+        VBox vBox = new VBox(5);
+        vBox.setMinWidth(WIN_WIDTH * 0.8);
+        vBox.setMinHeight(WIN_HEIGHT * 0.8 - 20);
+        scrollPane.setContent(vBox);
+
+        for (int i = 0; i < Event.getEvents().size(); i++) {
+            BorderPane box = eventBox(Event.getEvents().get(i), true, false);
+            vBox.getChildren().add(box);
+        }
+
+        return scrollPane;
+
     }
-
     public static void myTicketPage(Stage applicationStage){
         // containers
         BorderPane generalContainer = new BorderPane();
@@ -431,16 +411,13 @@ public class Main extends Application {
         for (int i = 0; i < Event.getEvents().size(); i++) {
             for (int j = 0; j < Event.getEvents().get(i).getTickets().size(); j++) {
                 if (Event.getEvents().get(i).getTickets().get(j).getUser().equals(currentUser)){
-                    BorderPane tickets = myEventBox(Event.getEvents().get(i), false, false);
+                    BorderPane tickets = eventBox(Event.getEvents().get(i), false, false);
                     vBox.getChildren().add(tickets);
 
+                }
+            }
         }
-        }
-
-        }
-
-
-
+        
 
         // scene and stage
         Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
@@ -524,122 +501,7 @@ public class Main extends Application {
 
         return container;
     }
-    public static ScrollPane basicEvent(Stage applicationStage){
-        // containers
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setMaxHeight(WIN_HEIGHT * 0.8 );
-        scrollPane.setMaxWidth(WIN_WIDTH * 0.85);
-        scrollPane.setPadding(new Insets(10, 10, 10, 10));
-
-
-        VBox vBox = new VBox(5);
-        vBox.setMinWidth(WIN_WIDTH * 0.8);
-        vBox.setMinHeight(WIN_HEIGHT * 0.8 - 20);
-        scrollPane.setContent(vBox);
-
-        for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = myEventBox(Event.getEvents().get(i), true, false);
-            vBox.getChildren().add(box);
-        }
-
-        return scrollPane;
-
-    }
-    public static Group eventBox(Event event, boolean inEvent){
-        Group clonedGroup = new Group();
-        Rectangle rectangle = new Rectangle();
-        rectangle.setHeight(175);
-        rectangle.setWidth(600);
-        rectangle.setFill(Color.LIGHTGRAY);
-        rectangle.setStroke(Color.BLACK);
-        rectangle.setStrokeType(StrokeType.INSIDE);
-
-
-        //Labels
-
-        Label eventTitle = new Label("Event Title");
-        eventTitle.setText(event.getTitle());
-        eventTitle.setLayoutX(13);
-        eventTitle.setLayoutY(2);
-        eventTitle.setFont(Font.font("Arial",27));
-
-        Label byUser = new Label("by User");
-        byUser.setLayoutX(17);
-        byUser.setLayoutY(130);
-        byUser.setFont(Font.font("Arial",14));
-
-        Label category = new Label("category");
-        category.setText(event.getCategory());
-        category.setLayoutX(17);
-        category.setLayoutY(39);
-        category.setFont(Font.font("Arial",15));
-
-        Label description = new Label("description");
-        description.setText(event.getDescription());
-        description.setLayoutX(17);
-        description.setLayoutY(66);
-        description.setFont(Font.font("Arial",15));
-        description.setWrapText(true);
-        description.setMaxHeight(20);
-
-        Label dateAndTime = new Label("date:Time");
-        dateAndTime.setText(String.format("%s : %s",event.getDateString(),event.getTime()));
-        dateAndTime.setLayoutX(450);
-        dateAndTime.setLayoutY(12);
-        dateAndTime.setFont(Font.font("Arial",15));
-
-        Label location = new Label("location");
-        location.setText(event.getLocation());
-        location.setLayoutX(450);
-        location.setLayoutY(39);
-        location.setFont(Font.font("Arial",15));
-
-        Label seatsLeft = new Label("#seatsLeft");
-        seatsLeft.setText(String.valueOf(event.getNumTicketsAvailable()));
-        seatsLeft.setLayoutX(500);
-        seatsLeft.setLayoutY(134);
-        seatsLeft.setFont(Font.font("Arial",15));
-
-        clonedGroup.getChildren().addAll(rectangle,eventTitle,byUser,category,description,dateAndTime,location,seatsLeft);
-
-        //Button
-        if (inEvent){
-            Button bookButton = new Button("book");
-            bookButton.setLayoutX(530);
-            bookButton.setLayoutY(130);
-            bookButton.setFont(Font.font("Arial",15));
-            clonedGroup.getChildren().add(bookButton);
-
-            bookButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    if(event.isUpcoming() || event.getDate().equals(LocalDate.now())){
-                        if (event.getTickets().size() < event.getCapacityNum()){
-                            event.addTicket(currentUser);
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setHeaderText("Event booked successfully!");
-                            alert.showAndWait();
-
-                        } else {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setHeaderText("Not enough seats!");
-                            alert.showAndWait();
-                    }
-
-                    }
-                    else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setHeaderText("you can't book past events");
-                        alert.showAndWait();
-                    }
-                }
-            });
-
-        }
-        return clonedGroup;
-
-    }
-    public static BorderPane myEventBox(Event event, boolean inEvent, boolean adminPanel){
+    public static BorderPane eventBox(Event event, boolean inEvent, boolean adminPanel){
         // general container
         BorderPane generalContainer = new BorderPane();
         generalContainer.setPadding(new Insets(10, 10, 10, 10));
