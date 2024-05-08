@@ -103,6 +103,9 @@ public class User implements Serializable{
                 out.println("Running Program");
             } else if(ex instanceof FileNotFoundException) {
                 out.println("Users File not found!");
+                for(int i =0; i < Event.getEvents().size(); i++){
+                    Event.getEvents().get(i).clearTickets();
+                }
             }
         }
     }

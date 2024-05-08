@@ -59,6 +59,10 @@ public class Event implements Serializable {
         }
     }
 
+    public void clearTickets(){
+        this.tickets.clear();
+    }
+
     public boolean bookedByUser(User user){
         for (Ticket ticket : tickets) {
             if (ticket.getUsername().equals(user.getUsername())) {

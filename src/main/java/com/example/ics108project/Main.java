@@ -34,8 +34,8 @@ public class Main extends Application {
     public void start(Stage applicationStage) throws ParseException {
 
         applicationStage.setTitle("Kfupm Event");
-        User.loadUsers();
         Event.loadEvents();
+        User.loadUsers();
         loginPage(applicationStage);
 
     }

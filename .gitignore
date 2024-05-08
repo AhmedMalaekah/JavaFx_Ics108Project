@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### user and events file ###
+Users.txt
+Events.txt
