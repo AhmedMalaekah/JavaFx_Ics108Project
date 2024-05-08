@@ -15,7 +15,6 @@ public class Event implements Serializable {
     private String location;
     private ArrayList<Ticket> tickets;
     private int capacityNum;
-//    private Button button;
     private User user;
 
     private static  ArrayList<Event> events = new ArrayList<>();

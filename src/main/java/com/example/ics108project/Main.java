@@ -345,11 +345,11 @@ public class Main extends Application {
     public static void homePage(Stage applicationStage){
         BorderPane generalContainer = new BorderPane();
         // Settings for events page
-        ScrollPane centerContainer = eventPage(applicationStage);
+        ScrollPane centerContainer = eventsBLock(applicationStage);
+        centerContainer.setMaxHeight(WIN_HEIGHT * 0.9);
 
         BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
         BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
-
 
         //root
         generalContainer.setPadding(PADDING);
@@ -361,26 +361,82 @@ public class Main extends Application {
         applicationStage.setScene(scene);
         applicationStage.show();
     }
-    public static ScrollPane eventPage(Stage applicationStage){
+    public static void adminPage(Stage applicationStage){
         // containers
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setMaxHeight(WIN_HEIGHT * 0.8 );
-        scrollPane.setMaxWidth(WIN_WIDTH * 0.85);
-        scrollPane.setPadding(new Insets(10, 10, 10, 10));
+        BorderPane generalContainer = new BorderPane();
+        ScrollPane centerContainer = new ScrollPane();
+        centerContainer.setMaxHeight(WIN_HEIGHT * 0.9);
+        centerContainer.setMaxWidth(WIN_WIDTH * 0.85);
+        centerContainer.setPadding(new Insets(10, 10, 10, 10));
+
+        // center container alignment
+        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
+        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
+        //root
+        generalContainer.setPadding(PADDING);
+        generalContainer.setTop(navbar(applicationStage));
+        generalContainer.setCenter(centerContainer);
 
 
-        VBox vBox = new VBox(5);
-        vBox.setMinWidth(WIN_WIDTH * 0.8);
-        vBox.setMinHeight(WIN_HEIGHT * 0.8 - 20);
-        scrollPane.setContent(vBox);
+        VBox eventBoxContainer = new VBox(5);
+        eventBoxContainer.setMinWidth(WIN_WIDTH * 0.8);
+        eventBoxContainer.setMinHeight(WIN_HEIGHT * 0.8 - 20);
+        centerContainer.setContent(eventBoxContainer);
+
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = eventBox(Event.getEvents().get(i), true, false);
-            vBox.getChildren().add(box);
+            BorderPane box = eventBox(Event.getEvents().get(i), false, true, applicationStage);
+            eventBoxContainer.getChildren().add(box);
         }
 
-        return scrollPane;
+        // create event btn
+        Button createBtn = new Button("Create Event");
+        createBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+        createBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                createEventPage(applicationStage);
+            }
+        });
+        eventBoxContainer.getChildren().add(createBtn);
 
+        // scene and stage
+        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
+        applicationStage.setScene(scene);
+        applicationStage.show();
+    }
+    public static void editEventPage(Stage applicationStage, Event event){
+        //containers and general settings
+        BorderPane generalContainer = new BorderPane();
+        VBox centerContainer = evnetInput(event);
+
+        generalContainer.setPadding(PADDING);
+        generalContainer.setTop(navbar(applicationStage));
+        generalContainer.setCenter(centerContainer);
+        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
+        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
+        // scene and stage
+        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
+        applicationStage.setScene(scene);
+        applicationStage.show();
+    }
+    public static void createEventPage(Stage applicationStage){
+        //containers and general settings
+        BorderPane generalContainer = new BorderPane();
+        VBox centerContainer = evnetInput(null);
+
+        generalContainer.setPadding(PADDING);
+        generalContainer.setTop(navbar(applicationStage));
+        generalContainer.setCenter(centerContainer);
+        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
+        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
+
+        // scene and stage
+        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
+        applicationStage.setScene(scene);
+        applicationStage.show();
     }
     public static void myTicketPage(Stage applicationStage){
         // containers
@@ -411,13 +467,13 @@ public class Main extends Application {
         for (int i = 0; i < Event.getEvents().size(); i++) {
             for (int j = 0; j < Event.getEvents().get(i).getTickets().size(); j++) {
                 if (Event.getEvents().get(i).getTickets().get(j).getUser().equals(currentUser)){
-                    BorderPane tickets = eventBox(Event.getEvents().get(i), false, false);
+                    BorderPane tickets = eventBox(Event.getEvents().get(i), false, false, applicationStage);
                     vBox.getChildren().add(tickets);
 
                 }
             }
         }
-        
+
 
         // scene and stage
         Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
@@ -455,7 +511,7 @@ public class Main extends Application {
                 bt3.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                        registerPage(applicationStage);
+                        adminPage(applicationStage);
                     }
                 });
                 leftNavContainer.getChildren().add(bt3);
@@ -501,7 +557,7 @@ public class Main extends Application {
 
         return container;
     }
-    public static BorderPane eventBox(Event event, boolean inEvent, boolean adminPanel){
+    public static BorderPane eventBox(Event event, boolean inEvent, boolean adminPanel, Stage applicationStage){
         // general container
         BorderPane generalContainer = new BorderPane();
         generalContainer.setPadding(new Insets(10, 10, 10, 10));
@@ -607,15 +663,188 @@ public class Main extends Application {
             editBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
             buttonsContainer.getChildren().add(editBtn);
 
+            editBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    editEventPage(applicationStage, event);
+                }
+            });
+
             //delete btn
             Button deleteBtn = new Button("Delete");
             deleteBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+            deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    Event.delEvent(event);
+                }
+            });
             buttonsContainer.getChildren().add(deleteBtn);
 
         }
 
         generalContainer.setLeft(leftContainer);
         generalContainer.setRight(rightContainer);
+        return generalContainer;
+    }
+    public static ScrollPane eventsBLock(Stage applicationStage){
+        // containers
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setMaxHeight(WIN_HEIGHT * 0.8 );
+        scrollPane.setMaxWidth(WIN_WIDTH * 0.85);
+        scrollPane.setPadding(new Insets(10, 10, 10, 10));
+
+
+        VBox vBox = new VBox(5);
+        vBox.setMinWidth(WIN_WIDTH * 0.8);
+        vBox.setMinHeight(WIN_HEIGHT * 0.8 - 20);
+        scrollPane.setContent(vBox);
+
+        for (int i = 0; i < Event.getEvents().size(); i++) {
+            BorderPane box = eventBox(Event.getEvents().get(i), true, false, applicationStage);
+            vBox.getChildren().add(box);
+        }
+
+        return scrollPane;
+
+    }
+    public static VBox evnetInput(Event event){
+        final Font INPUT_FONT = Font.font("Arial", 0.03*WIN_WIDTH);
+        final Insets FIELD_PADDING = new Insets(0, 0, 0, 10);
+        final Font BTN_FONT = Font.font("Arial", WIN_WIDTH * 0.025);
+
+        // general container settings
+        VBox generalContainer = new VBox();
+
+        generalContainer.setAlignment(Pos.TOP_CENTER);
+        generalContainer.setMaxWidth(0.8*WIN_WIDTH);
+        generalContainer.setSpacing(WIN_HEIGHT*0.05);
+        generalContainer.setBorder(Border.stroke(Paint.valueOf("Gray")));
+        generalContainer.setPadding(new Insets(15, 5, 10, 5));
+        generalContainer.setMaxHeight(0.8*WIN_HEIGHT);
+
+        // event heading
+        Label eventHeading = new Label("Event");
+        eventHeading.setFont(HEADING_FONT);
+        generalContainer.getChildren().add(eventHeading);
+
+        // TITLE
+        //container
+        HBox titleContainer = new HBox();
+        titleContainer.setAlignment(Pos.CENTER_LEFT);
+        titleContainer.setPadding(FIELD_PADDING);
+        titleContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //title label
+        Label titleLabel = new Label("Title:");
+        titleLabel.setFont(INPUT_FONT);
+        titleContainer.getChildren().add(titleLabel);
+
+        //title field
+        TextField titleField = new TextField();
+        titleField.setMinWidth(WIN_WIDTH*0.3);
+        titleField.setMinHeight(WIN_HEIGHT*0.05);
+        titleContainer.getChildren().add(titleField);
+
+        generalContainer.getChildren().add(titleContainer);
+
+        // CATEGORY
+        //container
+        HBox categoryContainer = new HBox();
+        categoryContainer.setAlignment(Pos.CENTER_LEFT);
+        categoryContainer.setPadding(FIELD_PADDING);
+        categoryContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //category label
+        Label categoryLabel = new Label("Category:");
+        categoryLabel.setFont(INPUT_FONT);
+        categoryContainer.getChildren().add(categoryLabel);
+
+        //category field
+        TextField categoryField = new TextField();
+        categoryField.setMinWidth(WIN_WIDTH*0.3);
+        categoryField.setMinHeight(WIN_HEIGHT*0.05);
+        categoryContainer.getChildren().add(categoryField);
+
+        generalContainer.getChildren().add(categoryContainer);
+
+        // DESCRIPTION
+        //container
+        VBox descriptionContainer = new VBox();
+        descriptionContainer.setAlignment(Pos.CENTER_LEFT);
+        descriptionContainer.setPadding(FIELD_PADDING);
+        descriptionContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //description label
+        Label descriptionLabel = new Label("Description:");
+        descriptionLabel.setFont(INPUT_FONT);
+        descriptionContainer.getChildren().add(descriptionLabel);
+
+        //description field
+        TextArea descriptionField = new TextArea();
+        descriptionContainer.getChildren().add(descriptionField);
+
+        generalContainer.getChildren().add(descriptionContainer);
+
+        // DATE and TIME
+        // container
+        HBox dateTimeContainer = new HBox();
+        dateTimeContainer.setAlignment(Pos.CENTER_LEFT);
+        dateTimeContainer.setPadding(FIELD_PADDING);
+        dateTimeContainer.setSpacing(WIN_WIDTH*0.03);
+
+        // date label
+        Label dateLabel = new Label("Date:");
+        dateLabel.setFont(INPUT_FONT);
+        dateTimeContainer.getChildren().add(dateLabel);
+
+        // date field
+        DatePicker dateField = new DatePicker();
+        dateTimeContainer.getChildren().add(dateField);
+
+        //time label
+        Label timeLabel = new Label("Time:");
+        timeLabel.setFont(INPUT_FONT);
+        dateTimeContainer.getChildren().add(timeLabel);
+
+        //time field
+        TextField timeField = new TextField();
+        timeField.setMinWidth(WIN_WIDTH*0.3);
+        timeField.setMinHeight(WIN_HEIGHT*0.05);
+        dateTimeContainer.getChildren().add(timeField);
+
+        generalContainer.getChildren().add(dateTimeContainer);
+
+        //LOCATION
+        //container
+        HBox locationContainer = new HBox();
+        locationContainer.setAlignment(Pos.CENTER_LEFT);
+        locationContainer.setPadding(FIELD_PADDING);
+        locationContainer.setSpacing(WIN_WIDTH*0.03);
+
+        //location label
+        Label locationLabel = new Label("Location:");
+        locationLabel.setFont(INPUT_FONT);
+        locationContainer.getChildren().add(locationLabel);
+
+        //location field
+        TextField locationField = new TextField();
+        locationField.setMinWidth(WIN_WIDTH*0.3);
+        locationField.setMinHeight(WIN_HEIGHT*0.05);
+        locationContainer.getChildren().add(locationField);
+
+        generalContainer.getChildren().add(locationContainer);
+
+        // create event extra fields
+        if(event == null){
+            //CAPACITY
+            //container
+            HBox capacityContainer = new HBox();
+            capacityContainer.setAlignment(Pos.CENTER_LEFT);
+            capacityContainer.setPadding(FIELD_PADDING);
+            capacityContainer.setSpacing(WIN_WIDTH*0.03);
+        }
+
         return generalContainer;
     }
 
