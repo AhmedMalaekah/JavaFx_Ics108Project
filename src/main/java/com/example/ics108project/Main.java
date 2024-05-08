@@ -409,7 +409,7 @@ public class Main extends Application {
     public static void editEventPage(Stage applicationStage, Event event){
         //containers and general settings
         BorderPane generalContainer = new BorderPane();
-        VBox centerContainer = evnetInput(event);
+        VBox centerContainer = evnetInput(event, applicationStage);
 
         generalContainer.setPadding(PADDING);
         generalContainer.setTop(navbar(applicationStage));
@@ -425,7 +425,7 @@ public class Main extends Application {
     public static void createEventPage(Stage applicationStage){
         //containers and general settings
         BorderPane generalContainer = new BorderPane();
-        VBox centerContainer = evnetInput(null);
+        VBox centerContainer = evnetInput(null, applicationStage);
 
         generalContainer.setPadding(PADDING);
         generalContainer.setTop(navbar(applicationStage));
@@ -636,6 +636,7 @@ public class Main extends Application {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setHeaderText("Event booked successfully!");
                             alert.showAndWait();
+                            homePage(applicationStage);
 
                         } else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -677,7 +678,9 @@ public class Main extends Application {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     Event.delEvent(event);
+                    adminPage(applicationStage);
                 }
+
             });
             buttonsContainer.getChildren().add(deleteBtn);
 
@@ -708,7 +711,7 @@ public class Main extends Application {
         return scrollPane;
 
     }
-    public static VBox evnetInput(Event event){
+    public static VBox evnetInput(Event event, Stage applicationStage){
         final Font INPUT_FONT = Font.font("Arial", 0.03*WIN_WIDTH);
         final Insets FIELD_PADDING = new Insets(0, 0, 0, 10);
         final Font BTN_FONT = Font.font("Arial", WIN_WIDTH * 0.025);
@@ -835,6 +838,11 @@ public class Main extends Application {
 
         generalContainer.getChildren().add(locationContainer);
 
+        //SAVE BTN
+        // I have added this button to the container at the end of the function
+        Button saveBtn = new Button("Save");
+        saveBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+
         // create event extra fields
         if(event == null){
             //CAPACITY
@@ -843,7 +851,49 @@ public class Main extends Application {
             capacityContainer.setAlignment(Pos.CENTER_LEFT);
             capacityContainer.setPadding(FIELD_PADDING);
             capacityContainer.setSpacing(WIN_WIDTH*0.03);
+
+            // capacity label
+            Label capacityLabel = new Label("Capacity: ");
+            capacityLabel.setFont(INPUT_FONT);
+            capacityContainer.getChildren().add(capacityLabel);
+
+            //capacity field
+            TextField capacityField = new TextField();
+            capacityField.setMinWidth(WIN_WIDTH*0.3);
+            capacityField.setMinHeight(WIN_HEIGHT*0.05);
+            capacityContainer.getChildren().add(capacityField);
+
+            generalContainer.getChildren().add(capacityContainer);
+
+            // save for create
+            saveBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    Event.createEvent(titleField.getText(), categoryField.getText(),descriptionField.getText(), dateField.getValue(), timeField.getText(), locationField.getText(),Integer.parseInt(capacityField.getText()), currentUser);
+                    adminPage(applicationStage);
+                }
+            });
+
         }
+        else{
+            titleField.setText(event.getTitle());
+            categoryField.setText(event.getCategory());
+            descriptionField.setText(event.getDescription());
+            dateField.setValue(event.getDate());
+            timeField.setText(event.getTime());
+            locationField.setText(event.getLocation());
+
+            // save for edit
+            saveBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    event.editEvent(titleField.getText(), categoryField.getText(), descriptionField.getText(), dateField.getValue(), timeField.getText(), locationField.getText(), currentUser);
+                    adminPage(applicationStage);
+                }
+            });
+        }
+
+        generalContainer.getChildren().add(saveBtn);
 
         return generalContainer;
     }

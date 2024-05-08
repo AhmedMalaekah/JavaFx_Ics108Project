@@ -26,20 +26,19 @@ public class Event implements Serializable {
         this.date = date;
         this.time = time;
         this.location = location;
-        this.capacityNum = capacityNum;
+        this.setCapacityNum(capacityNum);
         this.tickets = new ArrayList<Ticket>(capacityNum);
         this.user = user;
     }
 
-    public void editEvent(String title, String category, String description, LocalDate date, String time, String location, int capacityNum,User user){
-        this.title = title;
-        this.category = category;
-        this.description = description;
+    public void editEvent(String title, String category, String description, LocalDate date, String time, String location ,User user){
+        this.setTitle(title);
+        this.setCategory(category);
+        this.setDescription(description);
         this.setDate(date);
-        this.time = time;
-        this.location = location;
-        this.setCapacityNum(capacityNum);
-        this.user = user;
+        this.setTime(time);
+        this.setlocation(location);
+        this.setUser(user);
     }
 
     public static void createEvent(String title, String category, String description, LocalDate date, String time, String location, int capacityNum, User user){
@@ -77,25 +76,41 @@ public class Event implements Serializable {
     public String getTitle() {
         return title;
     }
+    public void setTitle(String title){
+        if(!title.isEmpty()){
+            this.title = title;
+        }
+    }
 
     public String getDateString() {
         return date.toString();
     }
+
+    public String getCategory() {return category;}
+    public void setCategory(String category){
+        if(!category.isEmpty()){
+            this.category = category;
+        }
+    }
+    public String getDescription() {return description;}
+    public void setDescription(String description){
+        if(!description.isEmpty()){
+            this.description = description;
+        }
+    }
+    public LocalDate getDate() {return date;}
     public void setDate(LocalDate date){
-        if(date.isAfter(LocalDate.now())){
+        if(date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())){
             this.date = date;
         }
     }
-    public String getCategory() {return category;}
-    public String getDescription() {return description;}
-    public LocalDate getDate() {return date;}
 
 
     public int getCapacityNum() {
         return capacityNum;
     }
     public void setCapacityNum(int capacityNum){
-        if(capacityNum >= this.capacityNum){
+        if(capacityNum > 0){
             this.capacityNum = capacityNum;
         }
     }
@@ -106,14 +121,27 @@ public class Event implements Serializable {
     public String getTime() {
         return time;
     }
+    public void setTime(String time){
+        if(!time.isEmpty()){
+            this.time = time;
+        }
+    }
 
 
     public User getUser() {
         return user;
     }
+    public void setUser(User user){
+        this.user = user;
+    }
 
     public String getLocation() {
         return location;
+    }
+    public void setlocation(String location){
+        if(!location.isEmpty()){
+            this.location = location;
+        }
     }
 
     public ArrayList<Ticket> getTickets() {
