@@ -386,7 +386,7 @@ public class Main extends Application {
 
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = eventBox(Event.getEvents().get(i), false, true, applicationStage);
+            BorderPane box = eventBox(Event.getEvents().get(i),false ,false, true, applicationStage);
             eventBoxContainer.getChildren().add(box);
         }
 
@@ -467,7 +467,7 @@ public class Main extends Application {
         for (int i = 0; i < Event.getEvents().size(); i++) {
             for (int j = 0; j < Event.getEvents().get(i).getTickets().size(); j++) {
                 if (Event.getEvents().get(i).getTickets().get(j).getUsername().equals(currentUser.getUsername())){
-                    BorderPane tickets = eventBox(Event.getEvents().get(i), false, false, applicationStage);
+                    BorderPane tickets = eventBox(Event.getEvents().get(i), true,false, false, applicationStage);
                     vBox.getChildren().add(tickets);
 
                 }
@@ -557,7 +557,7 @@ public class Main extends Application {
 
         return container;
     }
-    public static BorderPane eventBox(Event event, boolean inEvent, boolean adminPanel, Stage applicationStage){
+    public static BorderPane eventBox(Event event,boolean inMyTicket, boolean inEvent, boolean adminPanel, Stage applicationStage){
         // general container
         BorderPane generalContainer = new BorderPane();
         generalContainer.setPadding(new Insets(10, 10, 10, 10));
@@ -611,6 +611,30 @@ public class Main extends Application {
         Label locationLabel = new Label(event.getLocation());
         locationLabel.setFont(Font.font("Comic Sans MS", 0.02*WIN_WIDTH));
         dateTimeLocationContainer.getChildren().add(locationLabel);
+
+        if(inMyTicket){
+
+            HBox buttonsContainer = new HBox();
+            buttonsContainer.setAlignment(Pos.CENTER_RIGHT);
+            buttonsContainer.setSpacing(10);
+            rightContainer.setBottom(buttonsContainer);
+
+            //cancel button
+            Button cancelBtn = new Button("Cancel");
+            cancelBtn.setFont(Font.font("Comic Sans MS", 0.02 * WIN_WIDTH));
+            buttonsContainer.getChildren().add(cancelBtn);
+
+            cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    event.delTicket(currentUser);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Ticket has been deleted");
+                    alert.showAndWait();
+                    myTicketPage(applicationStage);
+                }
+            });
+        }
 
         if(inEvent) {
             HBox seatsBtnContainer = new HBox();
@@ -704,7 +728,7 @@ public class Main extends Application {
         scrollPane.setContent(vBox);
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = eventBox(Event.getEvents().get(i), true, false, applicationStage);
+            BorderPane box = eventBox(Event.getEvents().get(i),false, true, false, applicationStage);
             vBox.getChildren().add(box);
         }
 

@@ -50,6 +50,16 @@ public class Event implements Serializable {
             this.tickets.add(new Ticket(user.getUsername(), this.tickets.size() + 1));
         }
     }
+
+    public void delTicket(User user){
+        for (int i = 0; i < this.tickets.size(); i++) {
+            if (tickets.get(i).getUsername().equals(user.getUsername())){
+                this.tickets.remove(tickets.get(i));
+            }
+
+        }
+    }
+
     public boolean bookedByUser(User user){
         for (Ticket ticket : tickets) {
             if (ticket.getUsername().equals(user.getUsername())) {
