@@ -385,7 +385,7 @@ public class Main extends Application {
 
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = eventBox(Event.getEvents().get(i),false ,false, true, applicationStage);
+            BorderPane box = eventBox(Event.getEvents().get(i),false, -1 ,false, true, applicationStage);
             eventBoxContainer.getChildren().add(box);
         }
 
@@ -465,8 +465,10 @@ public class Main extends Application {
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
             for (int j = 0; j < Event.getEvents().get(i).getTickets().size(); j++) {
-                if (Event.getEvents().get(i).getTickets().get(j).getUsername().equals(currentUser.getUsername())){
-                    BorderPane tickets = eventBox(Event.getEvents().get(i), true,false, false, applicationStage);
+                Event event = Event.getEvents().get(i);
+                Ticket ticket = event.getTickets().get(j);
+                if (ticket.getUsername().equals(currentUser.getUsername())){
+                    BorderPane tickets = eventBox(Event.getEvents().get(i), true, ticket.getSeatNum(),false, false, applicationStage);
                     vBox.getChildren().add(tickets);
 
                 }
@@ -556,7 +558,7 @@ public class Main extends Application {
 
         return container;
     }
-    public static BorderPane eventBox(Event event,boolean inMyTicket, boolean inEvent, boolean adminPanel, Stage applicationStage){
+    public static BorderPane eventBox(Event event,boolean inMyTicket, Integer ticketNum ,boolean inEvent, boolean adminPanel, Stage applicationStage){
         // general container
         BorderPane generalContainer = new BorderPane();
         generalContainer.setPadding(new Insets(10, 10, 10, 10));
@@ -614,10 +616,15 @@ public class Main extends Application {
 
         if(inMyTicket){
 
-            HBox buttonsContainer = new HBox();
+            VBox buttonsContainer = new VBox();
             buttonsContainer.setAlignment(Pos.CENTER_RIGHT);
             buttonsContainer.setSpacing(10);
             rightContainer.setBottom(buttonsContainer);
+
+            // Seat Number
+            Label seatNumLabel = new Label("Seat number: " + ticketNum);
+            seatNumLabel.setFont(Font.font("Comic Sans MS", 0.02*WIN_WIDTH));
+            buttonsContainer.getChildren().add(seatNumLabel);
 
             //cancel button
             Button cancelBtn = new Button("Cancel");
@@ -627,7 +634,7 @@ public class Main extends Application {
             cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    event.delTicket(currentUser);
+                    event.delTicket(ticketNum);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Ticket has been deleted");
                     alert.showAndWait();
@@ -728,7 +735,7 @@ public class Main extends Application {
         scrollPane.setContent(vBox);
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = eventBox(Event.getEvents().get(i),false, true, false, applicationStage);
+            BorderPane box = eventBox(Event.getEvents().get(i),false, -1, true, false, applicationStage);
             vBox.getChildren().add(box);
         }
 

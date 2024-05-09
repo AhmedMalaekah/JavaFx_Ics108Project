@@ -13,6 +13,7 @@ public class Event implements Serializable {
     private String time;
     private String location;
     private ArrayList<Ticket> tickets;
+    private ArrayList<Integer> ticketsNum;
     private int capacityNum;
     private User user;
 
@@ -27,6 +28,8 @@ public class Event implements Serializable {
         this.setLocation(location);
         this.setCapacityNum(capacityNum);
         this.tickets = new ArrayList<Ticket>(capacityNum);
+        this.ticketsNum = new ArrayList<Integer>();
+        this.setTicketsNum();
         this.user = user;
     }
 
@@ -46,17 +49,30 @@ public class Event implements Serializable {
     }
     public void addTicket(User user){
         if(this.getNumTicketsAvailable() > 0) {
-            this.tickets.add(new Ticket(user.getUsername(), this.tickets.size() + 1));
+            this.tickets.add(new Ticket(user.getUsername(), this.getTicketNum()));
         }
     }
 
-    public void delTicket(User user){
+    public void delTicket(Integer seatNum){
         for (int i = 0; i < this.tickets.size(); i++) {
-            if (tickets.get(i).getUsername().equals(user.getUsername())){
+            if (tickets.get(i).getSeatNum().equals(seatNum)){
+                this.ticketsNum.add(seatNum);
                 this.tickets.remove(tickets.get(i));
             }
 
         }
+    }
+
+    public void setTicketsNum(){
+        for(int i =1; i<=this.capacityNum; i++){
+            this.ticketsNum.add(i);
+        }
+    }
+
+    public Integer getTicketNum(){
+        Integer num = ticketsNum.getFirst();
+        ticketsNum.remove(num);
+        return num;
     }
 
     public void clearTickets(){

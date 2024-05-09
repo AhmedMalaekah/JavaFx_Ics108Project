@@ -7,10 +7,9 @@ import java.io.Serializable;
 
 public class Ticket implements Serializable {
 
-
     private String username;
-    private int seatNum;
-    Ticket(String username, int seatNum){
+    private Integer seatNum;
+    Ticket(String username, Integer seatNum){
         this.username = username;
         this.seatNum = seatNum;
     }
@@ -18,5 +17,6 @@ public class Ticket implements Serializable {
     public String getUsername() {
         return username;
     }
+    public Integer getSeatNum(){return seatNum;}
 }
 
