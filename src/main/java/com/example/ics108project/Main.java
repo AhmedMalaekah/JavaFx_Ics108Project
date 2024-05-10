@@ -24,7 +24,7 @@ import java.time.LocalDate;
 public class Main extends Application {
 
     public static final double WIN_WIDTH = 800;
-    public static final double WIN_HEIGHT = 700;
+    public static final double WIN_HEIGHT = 800;
     public static final double HEADING_SIZE = 0.05 * WIN_WIDTH;
     public static final Font HEADING_FONT = Font.font("Comic Sans MS", HEADING_SIZE);
     public static final Insets PADDING  = new Insets(10, 8, 10, 8);
