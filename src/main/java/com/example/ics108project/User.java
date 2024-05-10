@@ -2,26 +2,25 @@ package com.example.ics108project;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import static java.lang.System.out;
 
 public class User implements Serializable{
     private String username;
-    private String passwaord;
+    private String password;
 
     private boolean admin;
     private static  ArrayList<User> users = new ArrayList<>();
 
     private static final ArrayList<String> usernames = new ArrayList<>();
-    public User(String username, String passwaord, boolean admin) {
+    public User(String username, String password, boolean admin) {
         this.username = username;
-        this.passwaord = passwaord;
+        this.password = password;
         this.admin = admin;
 
     }
-    public static void createUser(String username, String passwaord, boolean admin) {
-        User newUser = new User(username,passwaord,admin);
+    public static void createUser(String username, String password, boolean admin) {
+        User newUser = new User(username,password,admin);
         User.users.add(newUser);
         usernames.add(newUser.getUsername());
 
@@ -29,7 +28,7 @@ public class User implements Serializable{
 
 
     public boolean checkPassword(String passwaord){
-        if (this.passwaord.equals(passwaord))
+        if (this.password.equals(passwaord))
             return true;
         else return false;
 
@@ -59,11 +58,6 @@ public class User implements Serializable{
     public String getUsername() {
         return username;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
 
     @Override
     public String toString() {
