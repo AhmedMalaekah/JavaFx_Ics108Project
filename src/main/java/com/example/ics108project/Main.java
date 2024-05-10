@@ -395,7 +395,7 @@ public class Main extends Application {
         createBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                createEventPage(applicationStage);
+                editCreateEventPage(applicationStage, null);
             }
         });
         eventBoxContainer.getChildren().add(createBtn);
@@ -405,26 +405,10 @@ public class Main extends Application {
         applicationStage.setScene(scene);
         applicationStage.show();
     }
-    public static void editEventPage(Stage applicationStage, Event event){
+    public static void editCreateEventPage(Stage applicationStage, Event event){
         //containers and general settings
         BorderPane generalContainer = new BorderPane();
-        VBox centerContainer = evnetInput(event, applicationStage);
-
-        generalContainer.setPadding(PADDING);
-        generalContainer.setTop(navbar(applicationStage));
-        generalContainer.setCenter(centerContainer);
-        BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
-        BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
-
-        // scene and stage
-        Scene scene = new Scene(generalContainer, WIN_WIDTH, WIN_HEIGHT);
-        applicationStage.setScene(scene);
-        applicationStage.show();
-    }
-    public static void createEventPage(Stage applicationStage){
-        //containers and general settings
-        BorderPane generalContainer = new BorderPane();
-        VBox centerContainer = evnetInput(null, applicationStage);
+        VBox centerContainer = eventInput(event, applicationStage);
 
         generalContainer.setPadding(PADDING);
         generalContainer.setTop(navbar(applicationStage));
@@ -698,7 +682,7 @@ public class Main extends Application {
             editBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    editEventPage(applicationStage, event);
+                    editCreateEventPage(applicationStage, event);
                 }
             });
 
@@ -745,7 +729,7 @@ public class Main extends Application {
         return scrollPane;
 
     }
-    public static VBox evnetInput(Event event, Stage applicationStage){
+    public static VBox eventInput(Event event, Stage applicationStage){
         final Font INPUT_FONT = Font.font("Arial", 0.03*WIN_WIDTH);
         final Insets FIELD_PADDING = new Insets(0, 0, 0, 10);
         final Font BTN_FONT = Font.font("Arial", WIN_WIDTH * 0.025);
