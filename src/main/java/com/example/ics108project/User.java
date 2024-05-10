@@ -18,8 +18,6 @@ public class User implements Serializable{
         this.username = username;
         this.passwaord = passwaord;
         this.admin = admin;
-//        User.users.add(this);
-//        usernames.add(this.getUsername());
 
     }
     public static void createUser(String username, String passwaord, boolean admin) {
@@ -30,11 +28,6 @@ public class User implements Serializable{
     }
 
 
-    public User() {
-        this.username = "none";
-        this.passwaord = "noPass";
-    }
-
     public boolean checkPassword(String passwaord){
         if (this.passwaord.equals(passwaord))
             return true;
@@ -42,12 +35,6 @@ public class User implements Serializable{
 
     }
 
-    public boolean validUsername(){
-        if (User.usernames.contains(username)){
-            return false;
-        }
-        else return true;
-    }
 
     public static boolean validUsername(String username) {
         if (usernames.contains(username)) {
@@ -59,12 +46,7 @@ public class User implements Serializable{
 
     }
     public boolean isAdmin(){
-        if (admin){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return admin;
     }
 
     public static ArrayList<User> getUsers() {
