@@ -138,12 +138,7 @@ public class Event implements Serializable {
     }
     public LocalDate getDate() {return date;}
     public void setDate(LocalDate date){
-        if(date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())){
-            this.date = date;
-        }
-        else{
-            this.date = LocalDate.now();
-        }
+        this.date = date;
     }
 
 
@@ -213,12 +208,7 @@ public class Event implements Serializable {
             if(ex instanceof EOFException) {
                 out.print("");
             } else if(ex instanceof FileNotFoundException) {
-                out.println("Events File not found! \n This is your default Events");
-                User user1 = User.getUsers().getFirst();
-                createEvent("GitHub","workshop","GitHub learning workshop for continues integration", LocalDate.now(),"8:00PM","building 22", 1, user1);
-                createEvent("Toastmaster","workshopJavas","Learn how to express yourself with the world champions",LocalDate.now(),"7:00PM","building 54", 1, user1);
-                createEvent("Competitive Programming","competition","Compete in programming against experts",LocalDate.of(2024,5,2),"6:00PM","building 22", 1, user1);
-                createEvent("Graduation Party","party","Have fun with family and friends",LocalDate.of(2024,4,5),"5:00PM","KFUPM Stadium", 1, user1);
+                out.println("Events File not found!");
             }
         }
 

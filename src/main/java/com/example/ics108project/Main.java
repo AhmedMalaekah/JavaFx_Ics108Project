@@ -33,7 +33,7 @@ public class Main extends Application {
     @Override
     public void start(Stage applicationStage) throws ParseException {
 
-        applicationStage.setTitle("Kfupm Event");
+        applicationStage.setTitle("KFUPM Event");
         Event.loadEvents();
         User.loadUsers();
         loginPage(applicationStage);
@@ -174,7 +174,7 @@ public class Main extends Application {
                     }
                 }
                 catch (Exception e){
-                    System.out.println(userFound);
+                    System.out.println(e.getMessage());
                     System.out.println("There are no users");
                 }
 
@@ -467,7 +467,7 @@ public class Main extends Application {
             for (int j = 0; j < Event.getEvents().get(i).getTickets().size(); j++) {
                 Event event = Event.getEvents().get(i);
                 Ticket ticket = event.getTickets().get(j);
-                if (ticket.getUsername().equals(currentUser.getUsername())){
+                if (ticket.getUsername().equals(currentUser.getUsername()) && event.isUpcoming()){
                     BorderPane tickets = eventBox(Event.getEvents().get(i), true, ticket.getSeatNum(),false, false, applicationStage);
                     vBox.getChildren().add(tickets);
 
@@ -735,8 +735,11 @@ public class Main extends Application {
         scrollPane.setContent(vBox);
 
         for (int i = 0; i < Event.getEvents().size(); i++) {
-            BorderPane box = eventBox(Event.getEvents().get(i),false, -1, true, false, applicationStage);
-            vBox.getChildren().add(box);
+            Event event = Event.getEvents().get(i);
+            if(event.isUpcoming()) {
+                BorderPane box = eventBox(event, false, -1, true, false, applicationStage);
+                vBox.getChildren().add(box);
+            }
         }
 
         return scrollPane;
