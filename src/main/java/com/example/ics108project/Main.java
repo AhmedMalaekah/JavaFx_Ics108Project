@@ -41,6 +41,7 @@ public class Main extends Application {
     }
     @Override
     public void stop() {
+        // Saving system
         try (final FileOutputStream fout = new FileOutputStream("Users.txt");
              final ObjectOutputStream out = new ObjectOutputStream(fout)) {
             for (int i = 0; i < User.getUsers().size(); i++) {
@@ -350,7 +351,7 @@ public class Main extends Application {
         BorderPane.setAlignment(centerContainer, Pos.TOP_CENTER);
         BorderPane.setMargin(centerContainer, new Insets(WIN_HEIGHT*0.03, 0, 0, 0));
 
-        //root
+        //setting each part of the scene
         generalContainer.setPadding(PADDING);
         generalContainer.setTop(navbar(applicationStage));
         generalContainer.setCenter(centerContainer);
@@ -380,7 +381,7 @@ public class Main extends Application {
 
         VBox eventBoxContainer = new VBox(5);
         eventBoxContainer.setMinWidth(WIN_WIDTH * 0.8);
-        eventBoxContainer.setMinHeight(WIN_HEIGHT * 0.8 - 20);
+        eventBoxContainer.setMinHeight(WIN_HEIGHT * 0.8 - 20); // remove the padding
         centerContainer.setContent(eventBoxContainer);
 
 
@@ -425,7 +426,7 @@ public class Main extends Application {
         // containers
         BorderPane generalContainer = new BorderPane();
         ScrollPane centerContainer = new ScrollPane();
-        centerContainer.setMaxHeight(WIN_HEIGHT * 0.8 );
+        centerContainer.setMaxHeight(WIN_HEIGHT * 0.9);
         centerContainer.setMaxWidth(WIN_WIDTH * 0.80 + 20);
         centerContainer.setPadding(new Insets(10, 10, 10, 10));
 

@@ -44,6 +44,7 @@ public class Event implements Serializable {
     }
 
     public static void createEvent(String title, String category, String description, LocalDate date, String time, String location, int capacityNum, User user){
+        // creates an event then add it to events list
         Event newevent = new Event(title, category, description, date, time, location, capacityNum, user);
         Event.getEvents().add(newevent);
     }
@@ -56,7 +57,7 @@ public class Event implements Serializable {
     public void delTicket(Integer seatNum){
         for (int i = 0; i < this.tickets.size(); i++) {
             if (tickets.get(i).getSeatNum().equals(seatNum)){
-                this.ticketsNum.add(seatNum);
+                this.ticketsNum.add(seatNum);// add the number back to available seat numbers ticket
                 this.tickets.remove(tickets.get(i));
             }
 
@@ -64,12 +65,14 @@ public class Event implements Serializable {
     }
 
     public void setTicketsNum(){
+        // add numbers from 1 to capacity to available seat number list
         for(int i =1; i<=this.capacityNum; i++){
             this.ticketsNum.add(i);
         }
     }
 
     public Integer getTicketNum(){
+        // get the first available ticket to assign it to a specific user
         Integer num = ticketsNum.getFirst();
         ticketsNum.remove(num);
         return num;
@@ -116,7 +119,7 @@ public class Event implements Serializable {
             this.category = category;
         }
         else{
-            this.category = "";
+            this.category = "no category";
         }
     }
     public String getDescription() {return description;}
