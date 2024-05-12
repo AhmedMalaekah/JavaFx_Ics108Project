@@ -33,10 +33,10 @@ installed, you can compile and run the application from your IDE.
 ### Using the Application
 1. **Register**: Start by register in the application using your user credentials.
 2. **Login**: login in using your user credentials.
-3. **Viewing Events**: Navigate to the 'Events' section to see available courses.
+3. **Viewing Events**: Navigate to the 'Events' section to see available events.
 4. **Book an Event**: Click on the book button for the event you wish to attend.
 5. **View your tickets**: Under your 'My Tickets' section, view your booked events and cancel any you wish to not attend.
 6. **Admin Panel**: If you are an admin, you can go to 'Admin Panel' section to create, edit or delete events.
 7. **Admin Panel**: In the 'Admin panel' section, select 'Delete' button to delete the event.
 8. **Create Event**: In the 'Admin panel' section, select 'Create Event' button and add your event details to add a new event.
-9. **Edit Event**: In the 'Admin panel' section, select 'Edit' button and change the evnet values.
+9. **Edit Event**: In the 'Admin panel' section, select 'Edit' button and change the event values.
